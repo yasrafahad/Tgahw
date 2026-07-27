@@ -1,0 +1,11 @@
+{
+  "paused": false,
+  "pauseMessage": "",
+  "workingHours": {
+    "enabled": false,
+    "start": "07:30",
+    "end": "17:00"
+  },
+  "avgPrepMinutes": 4,
+  "outOfStock": []
+}

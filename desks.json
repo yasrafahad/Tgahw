@@ -1,0 +1,2047 @@
+{
+  "desks": [
+    {
+      "id": "3F-A-01",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "lVWPDibX-Kt7"
+    },
+    {
+      "id": "3F-A-02",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "ALP2DPOon5u9"
+    },
+    {
+      "id": "3F-A-03",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "UdCE9xhbssUC"
+    },
+    {
+      "id": "3F-A-04",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "0LImgNImy3cb"
+    },
+    {
+      "id": "3F-A-05",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "Y-S5GLhdYqzO"
+    },
+    {
+      "id": "3F-A-06",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "HGPtB288Upnc"
+    },
+    {
+      "id": "3F-A-07",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "sPRkdodligJp"
+    },
+    {
+      "id": "3F-A-08",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "Vtzr-U0HtvBM"
+    },
+    {
+      "id": "3F-A-09",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "jUlyK9UM-Pir"
+    },
+    {
+      "id": "3F-A-10",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "dGo62i1-KYA6"
+    },
+    {
+      "id": "3F-A-11",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "OdUfaUBFqiVk"
+    },
+    {
+      "id": "3F-A-12",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "PsTq74HzlDhy"
+    },
+    {
+      "id": "3F-A-13",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "xm3Jxiu1c7Mp"
+    },
+    {
+      "id": "3F-A-14",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "CAmPHwm_PeF9"
+    },
+    {
+      "id": "3F-A-15",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "OSXcGyQSrtaU"
+    },
+    {
+      "id": "3F-A-16",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "n3nVXzO9MYme"
+    },
+    {
+      "id": "3F-A-17",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "SPx2iyZHkDmG"
+    },
+    {
+      "id": "3F-A-18",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "9qBphf8XOSYF"
+    },
+    {
+      "id": "3F-A-19",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "4-Bj89VelCQ2"
+    },
+    {
+      "id": "3F-A-20",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "GOwwwBVtjI9F"
+    },
+    {
+      "id": "3F-A-21",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "TbsSvzRELRhs"
+    },
+    {
+      "id": "3F-A-22",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "HYmLMNvg2Ps0"
+    },
+    {
+      "id": "3F-A-23",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "0fHuJcFo6Z33"
+    },
+    {
+      "id": "3F-A-24",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "1RngAULJyuva"
+    },
+    {
+      "id": "3F-A-BMS",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "tXGPfKAsF3oh"
+    },
+    {
+      "id": "3F-A-C-1",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "EXV82sBtyvrJ"
+    },
+    {
+      "id": "3F-A-D-2",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "_kkz_75YAFQA"
+    },
+    {
+      "id": "3F-A-D-3",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "J_1UnJxZ1tau"
+    },
+    {
+      "id": "3F-A-D-4",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "oCKOJ9TLOzRW"
+    },
+    {
+      "id": "3F-A-MeetingRoom-M",
+      "type": "room",
+      "floor": "3F",
+      "zone": "A",
+      "maxQty": 10,
+      "active": true,
+      "token": "H1VRPYv3E2Dh"
+    },
+    {
+      "id": "3F-B-01",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "VzH1wc9O4efR"
+    },
+    {
+      "id": "3F-B-02",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "w4w_LRN_D1Rc"
+    },
+    {
+      "id": "3F-B-03",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "Of67-XypdBFU"
+    },
+    {
+      "id": "3F-B-04",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "Nh6QrEh9oKLF"
+    },
+    {
+      "id": "3F-B-05",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "FOvCd3g4WQvZ"
+    },
+    {
+      "id": "3F-B-06",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "gDG4NavOxfFZ"
+    },
+    {
+      "id": "3F-B-07",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "PL9q4jWXrDRO"
+    },
+    {
+      "id": "3F-B-08",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "xsqI8S8wOkpl"
+    },
+    {
+      "id": "3F-B-09",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "J3NcoiIdes3w"
+    },
+    {
+      "id": "3F-B-10",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "3rwe63hnygYM"
+    },
+    {
+      "id": "3F-B-11",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "bFF68C5WAALD"
+    },
+    {
+      "id": "3F-B-12",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "SP5W5hOHSZxD"
+    },
+    {
+      "id": "3F-B-13",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "Q4ba9PyWUkcq"
+    },
+    {
+      "id": "3F-B-14",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "2yjp_aReRtMr"
+    },
+    {
+      "id": "3F-B-15",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "1QqPtj-7XkXH"
+    },
+    {
+      "id": "3F-B-16",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "t2M4pOhdhXVt"
+    },
+    {
+      "id": "3F-B-C-1",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "6Z_EAGJndtDh"
+    },
+    {
+      "id": "3F-B-D-2",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "MziRdmyIMU-G"
+    },
+    {
+      "id": "3F-B-D-3",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "KlBxzyiUgshC"
+    },
+    {
+      "id": "3F-B-D-4",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "wHZT8KFrcYgq"
+    },
+    {
+      "id": "3F-B-HR",
+      "type": "desk",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "IOUhSr8rW6yy"
+    },
+    {
+      "id": "3F-B-MeetingRoom-S",
+      "type": "room",
+      "floor": "3F",
+      "zone": "B",
+      "maxQty": 6,
+      "active": true,
+      "token": "eB1JI2Hw2-KO"
+    },
+    {
+      "id": "4F-A-01",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "XgT-mrJOMral"
+    },
+    {
+      "id": "4F-A-02",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "3tnnOC5OZNGn"
+    },
+    {
+      "id": "4F-A-03",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "6s9vZZzv4eRk"
+    },
+    {
+      "id": "4F-A-04",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "lk7itSM0WkGf"
+    },
+    {
+      "id": "4F-A-05",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "B8SgVGIOvfPj"
+    },
+    {
+      "id": "4F-A-06",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "4IGqjo3JXOIX"
+    },
+    {
+      "id": "4F-A-07",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "RbmuH2uoutl3"
+    },
+    {
+      "id": "4F-A-08",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "CReOrKFP8Gu9"
+    },
+    {
+      "id": "4F-A-09",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "wL5dzj8x64mj"
+    },
+    {
+      "id": "4F-A-10",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "ClUI7KxF1MxE"
+    },
+    {
+      "id": "4F-A-11",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "qFgCy1s8E6BQ"
+    },
+    {
+      "id": "4F-A-12",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "qNDDMfcrXd5O"
+    },
+    {
+      "id": "4F-A-15",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "H9sKWF3baftT"
+    },
+    {
+      "id": "4F-A-19",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "wlmr_KSGNMPm"
+    },
+    {
+      "id": "4F-A-20",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "XZCb1rHbyS_8"
+    },
+    {
+      "id": "4F-A-21",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "DHEufLM7kwCr"
+    },
+    {
+      "id": "4F-A-22",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "siRGf8F8kXNp"
+    },
+    {
+      "id": "4F-A-23",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "1UGyb7LFRp5s"
+    },
+    {
+      "id": "4F-A-24",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "WvvVs-m71zBH"
+    },
+    {
+      "id": "4F-A-D-2",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "6EuPOoCowcag"
+    },
+    {
+      "id": "4F-A-D-3",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "AcxlE32_o9pi"
+    },
+    {
+      "id": "4F-A-D-4",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "L99shK7wAj09"
+    },
+    {
+      "id": "4F-A-MeetingRoom-M",
+      "type": "room",
+      "floor": "4F",
+      "zone": "A",
+      "maxQty": 10,
+      "active": true,
+      "token": "8kyHH94ub4yT"
+    },
+    {
+      "id": "4F-B-01",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "Om4n04PIJA1r"
+    },
+    {
+      "id": "4F-B-02",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "ZlJf98OIG6r7"
+    },
+    {
+      "id": "4F-B-03",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "d-WyIFU7CgBF"
+    },
+    {
+      "id": "4F-B-04",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "_dapf2u1g66d"
+    },
+    {
+      "id": "4F-B-05",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "-YRBG9DSI_6o"
+    },
+    {
+      "id": "4F-B-06",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "moEe-Ud_5RW9"
+    },
+    {
+      "id": "4F-B-07",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "QrDpRTeWuW3B"
+    },
+    {
+      "id": "4F-B-08",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "ZvGvipTCdTn3"
+    },
+    {
+      "id": "4F-B-09",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "rzrAA7yBEOSk"
+    },
+    {
+      "id": "4F-B-10",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "ERT3W_TuqJE3"
+    },
+    {
+      "id": "4F-B-11",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "BtGHJUyeZSYB"
+    },
+    {
+      "id": "4F-B-12",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "054EIxQWx8o_"
+    },
+    {
+      "id": "4F-B-13",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "1mAFdkvHie6I"
+    },
+    {
+      "id": "4F-B-14",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "CGs3omWtJKYm"
+    },
+    {
+      "id": "4F-B-15",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "ULZoKgjLuwzS"
+    },
+    {
+      "id": "4F-B-16",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "9zrKG1ISjbUZ"
+    },
+    {
+      "id": "4F-B-17",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "3JLU1tFjji2M"
+    },
+    {
+      "id": "4F-B-18",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "xnRqwXXl-uXd"
+    },
+    {
+      "id": "4F-B-C-1",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "L8kULhp1pQ5r"
+    },
+    {
+      "id": "4F-B-D-2",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "gi9h3cBG0Y3R"
+    },
+    {
+      "id": "4F-B-D-3",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "o9T9ZkAMalif"
+    },
+    {
+      "id": "4F-B-D-4",
+      "type": "desk",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "oTHl0YKOTnDr"
+    },
+    {
+      "id": "4F-B-MeetingRoom-M",
+      "type": "room",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 10,
+      "active": true,
+      "token": "MoxxRVuOhdiI"
+    },
+    {
+      "id": "4F-B-MeetingRoom-S",
+      "type": "room",
+      "floor": "4F",
+      "zone": "B",
+      "maxQty": 6,
+      "active": true,
+      "token": "ZLGHNDHTLuV7"
+    },
+    {
+      "id": "5F-A-01",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "JG1tPtfxJIlM"
+    },
+    {
+      "id": "5F-A-02",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "lKcP86mmoz5p"
+    },
+    {
+      "id": "5F-A-03",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "NvmoO12qv1XM"
+    },
+    {
+      "id": "5F-A-04",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "UX71KtSJfkXu"
+    },
+    {
+      "id": "5F-A-05",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "mp_UYg2bu4sH"
+    },
+    {
+      "id": "5F-A-06",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "3-Evt1VM7pl3"
+    },
+    {
+      "id": "5F-A-07",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "VbmwRfRvz9Ps"
+    },
+    {
+      "id": "5F-A-08​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "YlQVibyEwFP2"
+    },
+    {
+      "id": "5F-A-09​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "tOBzbyFX3L3u"
+    },
+    {
+      "id": "5F-A-10",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "SGgpgBCevQ7q"
+    },
+    {
+      "id": "5F-A-11",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "t7Ho5KYhd3Ds"
+    },
+    {
+      "id": "5F-A-12​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "igXupVq3koP3"
+    },
+    {
+      "id": "5F-A-13​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "UwiGJSHKWu7p"
+    },
+    {
+      "id": "5F-A-14",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "jnbgZY8qyMvj"
+    },
+    {
+      "id": "5F-A-15​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "lIwWWTo2ODO0"
+    },
+    {
+      "id": "5F-A-16",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "0c9gT1JpJF-m"
+    },
+    {
+      "id": "5F-A-17​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "CaI1eGNQ7eOz"
+    },
+    {
+      "id": "5F-A-18",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "iMKDhZC3-NcA"
+    },
+    {
+      "id": "5F-A-19​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "lEKnSN89FVve"
+    },
+    {
+      "id": "5F-A-20​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "rfKMaVMeFGeb"
+    },
+    {
+      "id": "5F-A-21​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "NIfp8zemqDpD"
+    },
+    {
+      "id": "5F-A-22",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "muOWC5fhUlFZ"
+    },
+    {
+      "id": "5F-A-23",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "vzQjGmYcPB7U"
+    },
+    {
+      "id": "5F-A-24​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "mKDIiE7AAKDF"
+    },
+    {
+      "id": "5F-A-C-1​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "JU3l1R-AWCrF"
+    },
+    {
+      "id": "5F-A-D-2​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "9-5cQhd_sBRZ"
+    },
+    {
+      "id": "5F-A-D-3​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "DFOCUaTdKcKE"
+    },
+    {
+      "id": "5F-A-D-4​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "xuobmQCyMQLz"
+    },
+    {
+      "id": "5F-A-MeetingRoom-M",
+      "type": "room",
+      "floor": "5F",
+      "zone": "A",
+      "maxQty": 10,
+      "active": true,
+      "token": "EufCDAc7YZ0i"
+    },
+    {
+      "id": "5F-B-01​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "m3jP3F5VnexL"
+    },
+    {
+      "id": "5F-B-02​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "0aove_IQl4x2"
+    },
+    {
+      "id": "5F-B-03​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "aYlX91W4FcQg"
+    },
+    {
+      "id": "5F-B-04​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "p1NNd6m2EvG5"
+    },
+    {
+      "id": "5F-B-05​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "6x9WhaZ5Eq3n"
+    },
+    {
+      "id": "5F-B-06​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "AZ_Iitg5b0ZU"
+    },
+    {
+      "id": "5F-B-07",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "UTRd9pbUBYR_"
+    },
+    {
+      "id": "5F-B-08​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "U5c2OHXuTf5p"
+    },
+    {
+      "id": "5F-B-09​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "Ax-QiL4GVKF7"
+    },
+    {
+      "id": "5F-B-10​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "u_jADGnFn6xb"
+    },
+    {
+      "id": "5F-B-11",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "Lx_knSdhXS2q"
+    },
+    {
+      "id": "5F-B-12​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "gv-_McVSIJHn"
+    },
+    {
+      "id": "5F-B-13",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "KiUEvCWUFTPx"
+    },
+    {
+      "id": "5F-B-14",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "moPGlm8m1vYH"
+    },
+    {
+      "id": "5F-B-15",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "KjntN586fTQJ"
+    },
+    {
+      "id": "5F-B-16",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "diGQsc_8U1E1"
+    },
+    {
+      "id": "5F-B-C-1​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "wynWlX0KiVSX"
+    },
+    {
+      "id": "5F-B-D-2​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "ZuDoBgvH2d0D"
+    },
+    {
+      "id": "5F-B-D-3​",
+      "type": "desk",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "fPJUkigOzVKD"
+    },
+    {
+      "id": "5F-B-MeetingRoom-L",
+      "type": "room",
+      "floor": "5F",
+      "zone": "B",
+      "maxQty": 15,
+      "active": true,
+      "token": "ldhbDOa9RGqj"
+    },
+    {
+      "id": "6F-A- 17",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "sc5lOnnh_Oc3"
+    },
+    {
+      "id": "6F-A-01",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "ypEtynYz_EyV"
+    },
+    {
+      "id": "6F-A-02",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "YsUR4O5Sk696"
+    },
+    {
+      "id": "6F-A-03",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "kLhwGispTc0I"
+    },
+    {
+      "id": "6F-A-04",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "hw0klQoahG_I"
+    },
+    {
+      "id": "6F-A-05",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "cFHB3HmbZlrW"
+    },
+    {
+      "id": "6F-A-06",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "mF9kwIHscOHS"
+    },
+    {
+      "id": "6F-A-07",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "M9XYXI6mTRtv"
+    },
+    {
+      "id": "6F-A-08",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "7Mh8MP3Sk1Fl"
+    },
+    {
+      "id": "6F-A-10",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "gliEfsTCR88U"
+    },
+    {
+      "id": "6F-A-11",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "qQfHgfzgx_p0"
+    },
+    {
+      "id": "6F-A-13",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "Br7T1j-TwZ6c"
+    },
+    {
+      "id": "6F-A-14",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "NRb4WBWQFEQG"
+    },
+    {
+      "id": "6F-A-15",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "neXUiJAbvqGT"
+    },
+    {
+      "id": "6F-A-16",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "dYjGn4gaC3DX"
+    },
+    {
+      "id": "6F-A-18",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "PiWZx19eOyXr"
+    },
+    {
+      "id": "6F-A-19",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "7OP6Ce3PNp8M"
+    },
+    {
+      "id": "6F-A-20",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "pTtbwJ407BHH"
+    },
+    {
+      "id": "6F-A-C-1​",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "o50DmIyCpKcW"
+    },
+    {
+      "id": "6F-A-D-2​",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "ya-rvwEtOedI"
+    },
+    {
+      "id": "6F-A-D-3​",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "MrDnQKFUnWkF"
+    },
+    {
+      "id": "6F-A-D-4​",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 5,
+      "active": true,
+      "token": "iBDLJC4p24KK"
+    },
+    {
+      "id": "6F-A-MeetingRoom-M",
+      "type": "room",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 10,
+      "active": true,
+      "token": "tI-VJ7vBUgMN"
+    },
+    {
+      "id": "6F-A-MeetingRoom-S",
+      "type": "room",
+      "floor": "6F",
+      "zone": "A",
+      "maxQty": 6,
+      "active": true,
+      "token": "V44pK88iIjGt"
+    },
+    {
+      "id": "6F-B-01",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "dlSatBW8RZ_n"
+    },
+    {
+      "id": "6F-B-02",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "VFM5jhr2-PJZ"
+    },
+    {
+      "id": "6F-B-03",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "NC0inwaOer33"
+    },
+    {
+      "id": "6F-B-04",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "xJouqqsJy8vf"
+    },
+    {
+      "id": "6F-B-05",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "WQaiHB2rJpPf"
+    },
+    {
+      "id": "6F-B-06",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "H8B9jw1dsLuQ"
+    },
+    {
+      "id": "6F-B-07",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "jePPesQ_puTX"
+    },
+    {
+      "id": "6F-B-08",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "aELZeQWsIL45"
+    },
+    {
+      "id": "6F-B-09",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "OfKEnuXAcjcW"
+    },
+    {
+      "id": "6F-B-10",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "NkjCPvLKNXSX"
+    },
+    {
+      "id": "6F-B-11",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "eudpKEgS3KVN"
+    },
+    {
+      "id": "6F-B-12",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "QPZTFgR41zlT"
+    },
+    {
+      "id": "6F-B-13",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "eLrxXn1D4pAk"
+    },
+    {
+      "id": "6F-B-14",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "fSjsbGe00Xcz"
+    },
+    {
+      "id": "6F-B-15",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "dCzkDbZNhj8k"
+    },
+    {
+      "id": "6F-B-16",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "py1UrFFieVYP"
+    },
+    {
+      "id": "6F-B-17",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "soW4i7JPrJSt"
+    },
+    {
+      "id": "6F-B-18",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "Fxn9Jp_8w3Lc"
+    },
+    {
+      "id": "6F-B-19",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "7bfmVzq1xbzJ"
+    },
+    {
+      "id": "6F-B-20",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "YbIU4rwzt8Wt"
+    },
+    {
+      "id": "6F-B-21",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "faMAW50ksjld"
+    },
+    {
+      "id": "6F-B-22",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "HULEPpn1uRXo"
+    },
+    {
+      "id": "6F-B-23",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "oOrv9UiHzWBm"
+    },
+    {
+      "id": "6F-B-24",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "PRyvH5IdzXZR"
+    },
+    {
+      "id": "6F-B-C-1",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "noGxV5JWirpp"
+    },
+    {
+      "id": "6F-B-C-2",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "K6bx8VSvNgxK"
+    },
+    {
+      "id": "6F-B-D-2",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "1Rmp_IWiqPk5"
+    },
+    {
+      "id": "6F-B-D-3",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "XyDm17qJI-wC"
+    },
+    {
+      "id": "6F-B-D-4",
+      "type": "desk",
+      "floor": "6F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "Yy1pRv7xv4e1"
+    },
+    {
+      "id": "8F-A-MeetingRoom-L",
+      "type": "room",
+      "floor": "8F",
+      "zone": "A",
+      "maxQty": 15,
+      "active": true,
+      "token": "sbf9yEjkFIDG"
+    },
+    {
+      "id": "8F-A-MeetingRoom-M",
+      "type": "room",
+      "floor": "8F",
+      "zone": "A",
+      "maxQty": 10,
+      "active": true,
+      "token": "OmPdOhZBlokQ"
+    },
+    {
+      "id": "8F-B-01",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "WtMpLEY8Ep7-"
+    },
+    {
+      "id": "8F-B-03",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "29rB52ECITRL"
+    },
+    {
+      "id": "8F-B-04",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "iP78Eh8IN7uN"
+    },
+    {
+      "id": "8F-B-05",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "ULb1AmTc8m7s"
+    },
+    {
+      "id": "8F-B-06",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "zZyh4PUXxrFE"
+    },
+    {
+      "id": "8F-B-07",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "uHrYbV5EtwQg"
+    },
+    {
+      "id": "8F-B-08",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "d9itfw3sxUma"
+    },
+    {
+      "id": "8F-B-09",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "CvqwUx5dYTkq"
+    },
+    {
+      "id": "8F-B-10",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "vtcmkk8asKPm"
+    },
+    {
+      "id": "8F-B-11",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "fsTPEMKuo_-_"
+    },
+    {
+      "id": "8F-B-12",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "MFcuQJ7hbjZV"
+    },
+    {
+      "id": "8F-B-13",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "5ZnQR0SWFkgt"
+    },
+    {
+      "id": "8F-B-14",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "mRHas8k0lzPv"
+    },
+    {
+      "id": "8F-B-15",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "jv-TGqd5T84K"
+    },
+    {
+      "id": "8F-B-16",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "LMRJdSHW_wxk"
+    },
+    {
+      "id": "8F-B-17",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "v3fdegUSN7PN"
+    },
+    {
+      "id": "8F-B-18",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "Eb7MZPcC52Xr"
+    },
+    {
+      "id": "8F-B-19",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "zzRiS7HO1ljN"
+    },
+    {
+      "id": "8F-B-C-1",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "jtE-rB6kTsSL"
+    },
+    {
+      "id": "8F-B-D-2",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "BAxrdMh9chuU"
+    },
+    {
+      "id": "8F-B-D-3",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "qxvGlYZwBPvi"
+    },
+    {
+      "id": "8F-B-D-4",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "qFEOMN9HZbNu"
+    },
+    {
+      "id": "8F-B-D-5",
+      "type": "desk",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 5,
+      "active": true,
+      "token": "quatD5gsQjv-"
+    },
+    {
+      "id": "8F-B-MeetingRoom-S",
+      "type": "room",
+      "floor": "8F",
+      "zone": "B",
+      "maxQty": 6,
+      "active": true,
+      "token": "DFwabwO-ffHl"
+    }
+  ]
+}

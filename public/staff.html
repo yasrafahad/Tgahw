@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="/fonts.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تَقْهوَّ · Tgahw — Pantry</title>
+<style>
+  :root{
+    --primary:#003C32;
+    --dark-teal:#014A44;
+    --muted-teal:#668A84;
+    --gold:#D1C1B0;
+    --ice:#E9F1F1;
+    --pale:#BED8D8;
+    --cream:#F3ECE6;
+    --off-white:#F8F4F1;
+    --gray:#525455;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'Plex Arabic','Segoe UI',system-ui,sans-serif;
+    background:var(--primary);
+    color:var(--off-white);
+    min-height:100vh;
+  }
+  header{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    padding:18px 26px;border-bottom:1px solid rgba(255,255,255,.12);
+    flex-wrap:wrap;
+  }
+  header h1{font-size:1.15rem;font-weight:600}
+  header h1 .accent{color:var(--gold)}
+  .head-right{display:flex;align-items:center;gap:16px}
+  .hbtn{border:1.5px solid var(--muted-teal);background:var(--dark-teal);color:var(--off-white);border-radius:16px;padding:7px 14px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit}
+  .hbtn:hover{border-color:var(--gold)}
+
+  /* room call alerts */
+  .calls-strip{padding:0 26px}
+  .call-alert{display:flex;align-items:center;gap:14px;background:var(--gold);color:var(--primary);border-radius:14px;padding:14px 18px;margin:10px 0 0;animation:callPulse 1.4s infinite}
+  @keyframes callPulse{0%,100%{box-shadow:0 0 0 0 rgba(209,193,176,.6)}50%{box-shadow:0 0 0 10px rgba(209,193,176,0)}}
+  .call-alert .cbell{font-size:1.4rem}
+  .call-alert .cdesk{font-weight:800;font-size:1.05rem}
+  .call-alert .ckind{font-weight:700;opacity:.85}
+  .call-alert .cdone{margin-left:auto;border:none;background:var(--primary);color:#fff;border-radius:10px;padding:9px 18px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:inherit}
+
+  /* stock modal */
+  .stock-overlay{display:none;position:fixed;inset:0;background:rgba(0,60,50,.6);z-index:60;align-items:center;justify-content:center;padding:20px}
+  .stock-overlay.show{display:flex}
+  .stock-modal{background:var(--off-white);color:var(--primary);border-radius:18px;padding:22px;max-width:440px;width:100%;max-height:80vh;overflow-y:auto}
+  .stock-modal h3{margin:0 0 4px}
+  .stock-sub{color:var(--gray);font-size:.82rem;margin:0 0 16px}
+  .stock-item{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--pale);border-radius:10px;padding:10px 14px;margin-bottom:7px}
+  .stock-item .sname{flex:1;font-weight:600}
+  .stock-item .sname small{color:var(--muted-teal);font-weight:400;margin-left:6px}
+  .stock-item .stog{border:none;border-radius:8px;padding:6px 14px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit}
+  .stock-item .stog.in{background:var(--ice);color:var(--dark-teal)}
+  .stock-item .stog.out{background:#f7d9d5;color:#8a2f24}
+  .stock-item.isout{opacity:.6}
+  .stock-close{width:100%;border:none;background:var(--primary);color:#fff;border-radius:12px;padding:13px;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit}
+  .live{display:flex;align-items:center;gap:8px;color:var(--pale);font-size:.85rem}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .pause-btn{
+    border:1.5px solid var(--gold);background:transparent;color:var(--gold);
+    border-radius:999px;padding:8px 18px;font-size:.88rem;font-weight:700;cursor:pointer;
+    font-family:inherit;
+  }
+  .pause-btn.paused{background:var(--gold);color:var(--primary)}
+
+  .paused-banner{
+    display:none;background:var(--gold);color:var(--primary);
+    padding:10px 26px;font-weight:700;font-size:.92rem;
+  }
+
+  .stats{display:flex;gap:14px;padding:18px 26px 6px;flex-wrap:wrap}
+  .stat{background:var(--dark-teal);border-radius:14px;padding:12px 20px;min-width:128px}
+  .stat small{color:var(--pale);font-size:.72rem;text-transform:uppercase;letter-spacing:1px}
+  .stat strong{display:block;font-size:1.6rem;margin-top:2px}
+  .stat.gold strong{color:var(--gold)}
+
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+    gap:16px;padding:20px 26px 40px;
+  }
+  .card{
+    background:var(--off-white);color:var(--primary);
+    border-radius:16px;padding:16px 18px;
+    display:flex;flex-direction:column;gap:10px;
+    animation:slideIn .25s ease;
+  }
+  @keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .card .top{display:flex;justify-content:space-between;align-items:center}
+  .desk-badge{
+    background:var(--gold);color:var(--primary);
+    font-weight:800;font-size:1.05rem;border-radius:10px;padding:5px 14px;
+  }
+  .age{font-size:.8rem;color:var(--gray)}
+  .age.late{color:#b3402f;font-weight:700}
+  .drink-row{display:flex;align-items:baseline;gap:8px}
+  .qty-pill{
+    background:var(--primary);color:#fff;border-radius:8px;
+    font-size:.9rem;font-weight:800;padding:2px 9px;
+  }
+  .card .drink{font-size:1.1rem;font-weight:700}
+  .card .option{color:var(--muted-teal);font-size:.9rem;font-weight:600}
+  .card .note{background:var(--cream);border-radius:10px;padding:8px 12px;font-size:.85rem;color:var(--gray)}
+  .done-btn{
+    border:none;border-radius:12px;background:var(--primary);color:#fff;
+    padding:12px;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:2px;
+    font-family:inherit;
+  }
+  .done-btn:hover{background:var(--dark-teal)}
+
+  .empty{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--pale)}
+  .empty .big{font-size:3rem;margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span class="accent">تَقْهوَّ</span> Tgahw — Pantry</h1>
+  <div class="head-right">
+    <div class="live"><span class="dot"></span> Live · refreshes every 5s</div>
+    <select id="floorFilter" onchange="onFloorChange()" style="border:1.5px solid var(--muted-teal);background:var(--dark-teal);color:var(--off-white);border-radius:16px;padding:7px 14px;font-size:.88rem;font-weight:700;font-family:inherit;cursor:pointer">
+      <option value="all">All floors</option>
+    </select>
+    <button class="hbtn" id="soundBtn" onclick="toggleSound()" title="Sound alert">🔔 Sound: on</button>
+    <button class="hbtn" onclick="openStock()">📦 Stock</button>
+    <button class="pause-btn" id="pauseBtn" onclick="togglePause()">⏸ Pause orders</button>
+  </div>
+</header>
+
+<div class="paused-banner" id="pausedBanner">⏸ Ordering is paused — people see a "service paused" screen. Press Resume when ready.</div>
+
+<!-- room call alerts -->
+<div class="calls-strip" id="callsStrip"></div>
+
+<div class="stats">
+  <div class="stat gold"><small>Waiting now</small><strong id="statOpen">0</strong></div>
+  <div class="stat"><small>Served today</small><strong id="statDone">0</strong></div>
+  <div class="stat"><small>Total today</small><strong id="statTotal">0</strong></div>
+  <div class="stat"><small>👍 today</small><strong id="statThumbs">0</strong></div>
+</div>
+
+<!-- stock modal -->
+<div class="stock-overlay" id="stockOverlay" onclick="if(event.target===this)closeStock()">
+  <div class="stock-modal">
+    <h3>Stock — tap to toggle</h3>
+    <p class="stock-sub">Out-of-stock drinks disappear from ordering for all desks and rooms.</p>
+    <div id="stockList"></div>
+    <button class="stock-close" onclick="closeStock()">Done</button>
+  </div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const grid = document.getElementById('grid');
+let paused = false;
+let currentFloor = localStorage.getItem('cupcall-floor') || 'all';
+let lastOpenCount = 0, lastCallCount = 0, firstLoad = true;
+let soundOn = localStorage.getItem('cupcall-sound') !== 'off';
+
+async function loadFloors(){
+  try {
+    const floors = await fetch('/api/floors').then(r => r.json());
+    const sel = document.getElementById('floorFilter');
+    floors.forEach(f => {
+      const o = document.createElement('option');
+      o.value = f; o.textContent = 'Floor ' + f;
+      sel.appendChild(o);
+    });
+    sel.value = currentFloor;
+  } catch {}
+}
+function onFloorChange(){
+  currentFloor = document.getElementById('floorFilter').value;
+  localStorage.setItem('cupcall-floor', currentFloor);
+  refresh();
+}
+
+function ageText(iso){
+  const mins = Math.floor((Date.now() - new Date(iso)) / 60000);
+  if (mins < 1) return 'just now';
+  return mins + ' min ago';
+}
+
+async function refresh(){
+  try {
+    const [open, stats, status, calls] = await Promise.all([
+      fetch('/api/orders/queue/open?floor=' + encodeURIComponent(currentFloor)).then(r => r.json()),
+      fetch('/api/orders/stats/today').then(r => r.json()),
+      fetch('/api/status').then(r => r.json()),
+      fetch('/api/calls/open?floor=' + encodeURIComponent(currentFloor)).then(r => r.json())
+    ]);
+
+    paused = status.reason === 'paused';
+    updatePauseUI();
+
+    // sound + visual alert when a new order or room call arrives
+    const signature = open.length + '|' + calls.length;
+    const newActivity = (open.length > lastOpenCount) || (calls.length > lastCallCount);
+    if (newActivity && !firstLoad) chime();
+    lastOpenCount = open.length; lastCallCount = calls.length; firstLoad = false;
+
+    renderCalls(calls);
+
+    document.getElementById('statOpen').textContent = open.length;
+    document.getElementById('statDone').textContent = stats.done;
+    document.getElementById('statTotal').textContent = stats.total;
+    document.getElementById('statThumbs').textContent = stats.thumbsUp;
+
+    open.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+    grid.innerHTML = open.length ? '' :
+      `<div class="empty"><div class="big">🍃</div>All caught up — no orders waiting.</div>`;
+
+    open.forEach(o => {
+      const mins = Math.floor((Date.now() - new Date(o.createdAt)) / 60000);
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="top">
+          <span class="desk-badge">${o.desk}</span>
+          <span class="age ${mins >= 10 ? 'late' : ''}">${ageText(o.createdAt)}</span>
+        </div>
+        <div>
+          <div class="drink-row">
+            ${o.qty > 1 ? `<span class="qty-pill">${o.qty}×</span>` : ''}
+            <span class="drink">${o.item}</span>
+          </div>
+          ${o.option ? `<div class="option">${o.option}</div>` : ''}
+        </div>
+        ${o.note ? `<div class="note">📝 ${o.note}</div>` : ''}
+        <button class="done-btn" onclick="markDone('${o.id}')">Delivered ✓</button>`;
+      grid.appendChild(card);
+    });
+  } catch(e) { /* keep last view on network hiccup */ }
+}
+
+function updatePauseUI(){
+  const btn = document.getElementById('pauseBtn');
+  btn.textContent = paused ? '▶ Resume orders' : '⏸ Pause orders';
+  btn.classList.toggle('paused', paused);
+  document.getElementById('pausedBanner').style.display = paused ? 'block' : 'none';
+}
+
+async function togglePause(){
+  let msg = '';
+  if (!paused) {
+    msg = prompt('Message to show people (optional):', 'Back in 15 minutes') || '';
+    if (msg === null) return;
+  }
+  const res = await fetch('/api/staff/pause', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ paused: !paused, pauseMessage: msg })
+  }).then(r => r.json());
+  paused = res.reason === 'paused';
+  updatePauseUI();
+}
+
+async function markDone(id){
+  await fetch('/api/orders/' + id + '/done', { method:'POST' });
+  refresh();
+  showUndo(id);
+}
+
+/* undo toast */
+let undoTimer = null;
+function showUndo(id){
+  let toast = document.getElementById('undoToast');
+  if (!toast){
+    toast = document.createElement('div');
+    toast.id = 'undoToast';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#003C32;color:#fff;padding:12px 18px;border-radius:12px;display:flex;align-items:center;gap:14px;z-index:80;box-shadow:0 6px 20px rgba(0,0,0,.3);font-size:.9rem';
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = `Marked delivered <button style="border:none;background:#D1C1B0;color:#003C32;border-radius:8px;padding:6px 14px;font-weight:700;cursor:pointer;font-family:inherit">Undo</button>`;
+  toast.style.display = 'flex';
+  toast.querySelector('button').onclick = async () => {
+    await fetch('/api/orders/' + id + '/undo', { method:'POST' });
+    toast.style.display = 'none';
+    refresh();
+  };
+  clearTimeout(undoTimer);
+  undoTimer = setTimeout(() => { toast.style.display = 'none'; }, 8000);
+}
+
+/* sound alert */
+function toggleSound(){
+  soundOn = !soundOn;
+  localStorage.setItem('cupcall-sound', soundOn ? 'on' : 'off');
+  document.getElementById('soundBtn').textContent = soundOn ? '🔔 Sound: on' : '🔕 Sound: off';
+  if (soundOn) chime();
+}
+let audioCtx = null;
+function chime(){
+  if (!soundOn) return;
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const now = audioCtx.currentTime;
+    [880, 1175].forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.frequency.value = freq;
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0.0001, now + i * 0.15);
+      gain.gain.exponentialRampToValueAtTime(0.25, now + i * 0.15 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.15 + 0.3);
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.start(now + i * 0.15); osc.stop(now + i * 0.15 + 0.3);
+    });
+  } catch {}
+}
+
+/* room call alerts */
+const CALL_LABEL = { service: 'Requesting service', refill: 'Needs a refill', clear: 'Clear the table', other: 'Needs assistance' };
+function renderCalls(calls){
+  const strip = document.getElementById('callsStrip');
+  strip.innerHTML = '';
+  calls.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'call-alert';
+    const mins = Math.floor((Date.now() - new Date(c.createdAt)) / 60000);
+    el.innerHTML = `
+      <span class="cbell">🔔</span>
+      <span class="cdesk">${c.desk}</span>
+      <span class="ckind">${CALL_LABEL[c.kind] || c.kind}${c.message ? ' — ' + c.message : ''}</span>
+      <span style="font-size:.8rem;opacity:.7">${mins < 1 ? 'just now' : mins + ' min ago'}</span>
+      <button class="cdone" onclick="resolveCall('${c.id}')">Done ✓</button>`;
+    strip.appendChild(el);
+  });
+}
+async function resolveCall(id){
+  await fetch('/api/calls/' + id + '/resolve', { method:'POST' });
+  refresh();
+}
+
+/* stock modal */
+async function openStock(){
+  const items = await fetch('/api/menu/stock').then(r => r.json());
+  const list = document.getElementById('stockList');
+  list.innerHTML = '';
+  items.forEach(it => {
+    const row = document.createElement('div');
+    row.className = 'stock-item' + (it.inStock ? '' : ' isout');
+    row.innerHTML = `
+      <span class="sname">${it.name}<small>${it.name_ar || ''}</small></span>
+      <button class="stog ${it.inStock ? 'in' : 'out'}">${it.inStock ? 'In stock' : 'Out of stock'}</button>`;
+    row.querySelector('.stog').onclick = async () => {
+      await fetch('/api/stock/toggle', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ itemId: it.id }) });
+      openStock();
+    };
+    list.appendChild(row);
+  });
+  document.getElementById('stockOverlay').classList.add('show');
+}
+function closeStock(){ document.getElementById('stockOverlay').classList.remove('show'); }
+
+document.getElementById('soundBtn').textContent = soundOn ? '🔔 Sound: on' : '🔕 Sound: off';
+loadFloors();
+refresh();
+setInterval(refresh, 5000);
+</script>
+</body>
+</html>

@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="/fonts.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تَقْهوَّ · Tgahw — Admin</title>
+<style>
+  :root{
+    --primary:#003C32;
+    --dark-teal:#014A44;
+    --muted-teal:#668A84;
+    --gold:#D1C1B0;
+    --ice:#E9F1F1;
+    --pale:#BED8D8;
+    --cream:#F3ECE6;
+    --off-white:#F8F4F1;
+    --gray:#525455;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'Plex Arabic','Segoe UI',system-ui,sans-serif;
+    background:var(--ice);color:var(--primary);min-height:100vh;
+  }
+  header{
+    background:var(--primary);color:var(--off-white);
+    padding:16px 24px;display:flex;align-items:center;justify-content:space-between;
+  }
+  header h1{font-size:1.1rem;font-weight:600}
+  header h1 .accent{color:var(--gold)}
+  .wrap{max-width:860px;margin:0 auto;padding:22px 16px 60px}
+
+  /* login */
+  #loginView{max-width:340px;margin:80px auto;text-align:center}
+  #loginView .lock{
+    width:70px;height:70px;margin:0 auto 16px;border-radius:50%;
+    background:var(--primary);color:var(--gold);
+    display:flex;align-items:center;justify-content:center;font-size:1.7rem;
+  }
+  #loginView input{
+    width:100%;border:1.5px solid var(--pale);border-radius:12px;
+    padding:13px 16px;font-size:1.1rem;text-align:center;letter-spacing:6px;
+    background:var(--off-white);outline:none;margin-top:14px;
+  }
+  #loginView button{
+    width:100%;margin-top:12px;border:none;border-radius:12px;
+    background:var(--primary);color:#fff;padding:14px;font-size:1rem;font-weight:700;cursor:pointer;
+  }
+  .login-err{color:#b3402f;font-size:.85rem;margin-top:10px;display:none}
+
+  /* sections */
+  .section{
+    background:var(--off-white);border-radius:16px;
+    padding:18px 20px;margin-bottom:18px;
+    box-shadow:0 1px 4px rgba(0,60,50,.06);
+  }
+  .section h2{font-size:1rem;font-weight:700;color:var(--dark-teal);margin-bottom:14px}
+
+  .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+  .row label{font-size:.9rem;font-weight:600;color:var(--gray)}
+  input[type="text"],input[type="time"],input[type="url"]{
+    border:1.5px solid var(--pale);border-radius:10px;
+    padding:9px 12px;font-size:.9rem;background:#fff;outline:none;font-family:inherit;
+  }
+  input[type="text"]:focus,input[type="url"]:focus{border-color:var(--muted-teal)}
+
+  /* toggle */
+  .toggle{position:relative;width:46px;height:26px;flex-shrink:0;cursor:pointer}
+  .toggle input{opacity:0;width:0;height:0}
+  .slider{
+    position:absolute;inset:0;background:var(--pale);border-radius:999px;transition:.15s;
+  }
+  .slider:before{
+    content:"";position:absolute;width:20px;height:20px;border-radius:50%;
+    background:#fff;top:3px;left:3px;transition:.15s;
+  }
+  .toggle input:checked + .slider{background:var(--dark-teal)}
+  .toggle input:checked + .slider:before{transform:translateX(20px)}
+
+  .save-btn{
+    border:none;border-radius:12px;background:var(--primary);color:#fff;
+    padding:11px 24px;font-size:.92rem;font-weight:700;cursor:pointer;font-family:inherit;
+  }
+  .save-btn.secondary{background:transparent;border:1.5px solid var(--primary);color:var(--primary)}
+  .saved-flash{color:var(--dark-teal);font-size:.85rem;font-weight:700;margin-left:10px;opacity:0;transition:opacity .3s}
+  .saved-flash.show{opacity:1}
+
+  /* menu editor */
+  .cat-block{margin-bottom:20px}
+  .cat-title{
+    font-size:.85rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;
+    color:var(--muted-teal);margin-bottom:8px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .add-btn{
+    border:1.5px dashed var(--muted-teal);background:transparent;color:var(--dark-teal);
+    border-radius:10px;padding:6px 14px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit;
+  }
+  .cat-actions{display:flex;gap:6px;align-items:center}
+  .cat-mini{border:1.5px solid var(--pale);background:#fff;color:var(--dark-teal);border-radius:8px;padding:5px 10px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:inherit;text-transform:none;letter-spacing:0}
+  .cat-mini.del{color:#8a2f24;border-color:#e6c4bd}
+  .add-cat-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+  .add-cat-bar input{border:1.5px solid var(--pale);border-radius:10px;padding:9px 12px;font-size:.9rem;background:#fff;font-family:inherit}
+  .add-cat-err{color:#b3402f;font-size:.82rem;margin-bottom:8px;display:none}
+  .item-row{
+    display:flex;align-items:center;gap:12px;
+    background:#fff;border:1px solid var(--pale);border-radius:12px;
+    padding:10px 14px;margin-bottom:8px;
+  }
+  .item-row.unavailable{opacity:.55}
+  .item-row .mini-icon{width:46px;height:46px;border-radius:10px;background:var(--ice);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .item-row .mini-icon svg{width:30px;height:30px}
+  .icon-pick-row{display:flex;align-items:center;gap:12px}
+  .icon-preview{width:52px;height:52px;border-radius:10px;background:var(--ice);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .icon-preview svg{width:34px;height:34px}
+  .icon-select{border:1.5px solid var(--pale);border-radius:10px;padding:9px 12px;font-size:.9rem;background:#fff;color:var(--primary);font-family:inherit;flex:1}
+  .item-row .names{flex:1;min-width:0}
+  .item-row .n-en{font-weight:700;font-size:.95rem}
+  .item-row .n-ar{font-size:.82rem;color:var(--muted-teal)}
+  .icon-btn{
+    border:none;background:var(--ice);border-radius:9px;
+    width:34px;height:34px;font-size:.95rem;cursor:pointer;
+  }
+  .icon-btn.del{color:#b3402f}
+
+  /* edit form */
+  .edit-form{
+    background:var(--cream);border-radius:12px;padding:14px;margin:-4px 0 10px;
+    display:grid;gap:9px;
+  }
+  .edit-form label{font-size:.75rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px}
+  .edit-form input{width:100%}
+  .edit-form .hint{font-size:.75rem;color:var(--muted-teal)}
+  .edit-actions{display:flex;gap:10px;margin-top:4px}
+
+  /* desks */
+  .add-desk-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+  .desk-type-sel{border:1.5px solid var(--pale);border-radius:10px;padding:9px 12px;font-size:.9rem;background:#fff;color:var(--primary);font-family:inherit}
+  .add-desk-err{color:#b3402f;font-size:.82rem;margin-bottom:8px;display:none}
+  .desk-filter{display:flex;align-items:center;gap:10px;margin:10px 0;font-size:.85rem;color:var(--gray)}
+  .desk-filter select{border:1.5px solid var(--pale);border-radius:8px;padding:6px 10px;background:#fff;color:var(--primary);font-family:inherit}
+  .desk-count{color:var(--muted-teal);font-size:.8rem}
+  .desk-list-scroll{max-height:340px;overflow-y:auto;padding-right:4px}
+  .desk-row{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--pale);border-radius:10px;padding:9px 13px;margin-bottom:7px}
+  .desk-row.inactive{opacity:.5}
+  .desk-row .did{font-weight:700;font-size:.92rem;flex:1;word-break:break-all}
+  .desk-row .dtype{background:var(--ice);border-radius:12px;padding:3px 10px;font-size:.68rem;font-weight:700;color:var(--dark-teal);letter-spacing:.5px}
+  .desk-row .dtype.room{background:var(--gold);color:var(--primary)}
+  .desk-row .dtoggle{border:none;background:var(--ice);border-radius:8px;padding:6px 12px;font-size:.75rem;font-weight:700;color:var(--dark-teal);cursor:pointer;font-family:inherit}
+  .desk-row.inactive .dtoggle{background:var(--dark-teal);color:#fff}
+  .desk-row .dqr{border:1.5px solid var(--primary);background:transparent;border-radius:8px;padding:6px 12px;font-size:.75rem;font-weight:700;color:var(--primary);cursor:pointer;font-family:inherit}
+
+  /* QR modal */
+  .qr-overlay{display:none;position:fixed;inset:0;background:rgba(0,60,50,.55);z-index:50;align-items:center;justify-content:center;padding:20px}
+  .qr-overlay.show{display:flex}
+  .qr-modal{background:#fff;border-radius:18px;padding:24px;max-width:360px;width:100%;text-align:center}
+  .qr-modal h3{margin:0 0 4px;color:var(--primary);font-size:1.1rem}
+  .qr-modal .qsub{color:var(--muted-teal);font-size:.82rem;margin-bottom:16px;word-break:break-all}
+  .qr-modal img{width:240px;height:240px;border:2px solid var(--primary);border-radius:14px;padding:8px;background:#fff}
+  .qr-modal .qactions{display:flex;gap:10px;margin-top:18px}
+  .qr-modal .qbtn{flex:1;border:none;border-radius:11px;padding:11px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit}
+  .qr-modal .qbtn.primary{background:var(--primary);color:#fff}
+  .qr-modal .qbtn.ghost{background:var(--ice);color:var(--dark-teal)}
+  .qr-modal .qclose{margin-top:12px;background:none;border:none;color:var(--muted-teal);font-size:.85rem;cursor:pointer;text-decoration:underline;font-family:inherit}
+  .qr-base-row{margin-top:14px;font-size:.75rem;color:var(--gray)}
+  .qr-base-row input{width:100%;border:1.5px solid var(--pale);border-radius:8px;padding:8px 10px;font-size:.8rem;margin-top:4px;font-family:inherit}
+
+  /* dashboard */
+  .dash-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+  .dash-head h2{margin:0}
+  .range-tabs{display:flex;gap:6px;flex-wrap:wrap}
+  .range-tab{border:1.5px solid var(--pale);background:#fff;color:var(--dark-teal);border-radius:16px;padding:6px 14px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit}
+  .range-tab.active{background:var(--primary);border-color:var(--primary);color:#fff}
+  .kpi-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .kpi{background:var(--primary);color:var(--off-white);border-radius:12px;padding:12px 18px;min-width:120px;flex:1}
+  .kpi small{color:var(--pale);font-size:.65rem;letter-spacing:1px;text-transform:uppercase;display:block}
+  .kpi b{font-size:1.7rem;display:block;margin-top:3px}
+  .kpi.accent b{color:var(--gold)}
+  .dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .dash-panel{background:#fff;border:1px solid var(--pale);border-radius:12px;padding:14px 16px}
+  .dash-panel h3{font-size:.82rem;color:var(--dark-teal);margin:0 0 12px}
+  .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+  .bar-label{font-size:.78rem;color:var(--gray);width:90px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar-track{flex:1;height:16px;background:var(--ice);border-radius:4px;overflow:hidden}
+  .bar-fill{height:100%;background:var(--primary);border-radius:4px}
+  .bar-fill.accent{background:var(--gold)}
+  .bar-val{font-size:.78rem;font-weight:700;color:var(--dark-teal);width:28px;text-align:right;flex-shrink:0}
+  .hour-chart{display:flex;align-items:flex-end;gap:3px;height:90px;padding-top:6px}
+  .hour-bar{flex:1;background:var(--primary);border-radius:2px 2px 0 0;min-height:2px}
+  .hour-bar.peak{background:var(--gold)}
+  .hour-labels{display:flex;gap:3px;margin-top:4px}
+  .hour-labels span{flex:1;font-size:.6rem;color:var(--muted-teal);text-align:center}
+  .dash-empty{color:var(--muted-teal);font-size:.85rem;font-style:italic;padding:10px 0}
+
+  /* escalations */
+  .esc-open-badge{background:var(--gold);color:var(--primary);border-radius:14px;padding:4px 12px;font-size:.8rem;font-weight:700}
+  .esc-open-badge.zero{background:var(--ice);color:var(--muted-teal)}
+  .esc-card{background:#fff;border:1px solid var(--pale);border-radius:12px;padding:12px 15px;margin-bottom:9px}
+  .esc-card.resolved{opacity:.55}
+  .esc-top{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:6px}
+  .esc-desk{background:var(--primary);color:#fff;border-radius:7px;padding:3px 10px;font-size:.82rem;font-weight:700}
+  .esc-cat{border-radius:11px;padding:3px 10px;font-size:.68rem;font-weight:700;letter-spacing:.5px}
+  .esc-cat.late{background:#f7e2c9;color:#8a5a1d}
+  .esc-cat.wrong{background:#f7d9d5;color:#8a2f24}
+  .esc-cat.quality{background:#e3e9f7;color:#2f4a8a}
+  .esc-cat.missing{background:#f7d9d5;color:#8a2f24}
+  .esc-time{margin-inline-start:auto;font-size:.75rem;color:var(--gray)}
+  .esc-msg{font-size:.85rem;color:var(--gray);margin:4px 0}
+  .esc-order{font-size:.75rem;color:var(--muted-teal);margin-bottom:8px}
+  .esc-resolve{border:none;background:var(--primary);color:#fff;border-radius:9px;padding:7px 16px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit}
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span class="accent">تَقْهوَّ</span> Tgahw — Admin</h1>
+  <span id="menuDirty" style="font-size:.8rem;color:var(--gold);display:none">Unsaved menu changes</span>
+</header>
+
+<!-- LOGIN -->
+<div id="loginView">
+  <div class="lock">🔒</div>
+  <h2>Admin access</h2>
+  <input type="password" id="pinInput" placeholder="PIN" maxlength="12" inputmode="numeric">
+  <button onclick="login()">Enter</button>
+  <div class="login-err" id="loginErr">Wrong PIN, try again.</div>
+</div>
+
+<!-- ADMIN -->
+<div class="wrap" id="adminView" style="display:none">
+
+  <div class="section">
+    <div class="dash-head">
+      <h2>Dashboard</h2>
+      <div class="range-tabs" id="rangeTabs">
+        <button class="range-tab active" data-range="today">Today</button>
+        <button class="range-tab" data-range="week">This week</button>
+        <button class="range-tab" data-range="month">This month</button>
+        <button class="range-tab" data-range="year">This year</button>
+      </div>
+    </div>
+    <div class="kpi-row" id="kpiRow"></div>
+    <div class="dash-grid">
+      <div class="dash-panel"><h3>Most ordered drinks</h3><div id="chartDrinks"></div></div>
+      <div class="dash-panel"><h3>Orders by floor</h3><div id="chartFloor"></div>
+        <h3 style="margin-top:16px">Top desks</h3><div id="chartDesk"></div></div>
+      <div class="dash-panel"><h3>Orders by hour</h3><div id="chartHour"></div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="dash-head">
+      <h2>Escalations</h2>
+      <span class="esc-open-badge" id="escOpenBadge">0 open</span>
+    </div>
+    <div id="escAdminList"></div>
+  </div>
+
+  <div class="section">
+    <h2>Service</h2>
+    <div class="row">
+      <label class="toggle"><input type="checkbox" id="pausedToggle"><span class="slider"></span></label>
+      <label>Pause ordering now</label>
+      <input type="text" id="pauseMsg" placeholder="Message shown to people (optional)" style="flex:1;min-width:220px">
+    </div>
+    <div class="row">
+      <label class="toggle"><input type="checkbox" id="hoursToggle"><span class="slider"></span></label>
+      <label>Working hours</label>
+      <input type="time" id="hoursStart">
+      <span style="color:var(--gray)">to</span>
+      <input type="time" id="hoursEnd">
+    </div>
+    <div class="row" style="margin-bottom:0">
+      <button class="save-btn" onclick="saveSettings()">Save service settings</button>
+      <span class="saved-flash" id="settingsFlash">Saved ✓</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Desks &amp; meeting rooms</h2>
+    <div class="add-desk-bar">
+      <input type="text" id="newDeskId" placeholder="e.g. 3F-A-25 or 3F-A-MeetingRoom-M" style="flex:1;min-width:200px">
+      <select id="newDeskType" class="desk-type-sel">
+        <option value="desk">Desk</option>
+        <option value="room">Meeting room</option>
+      </select>
+      <button class="save-btn" onclick="addDesk()">+ Add</button>
+      <span class="saved-flash" id="deskFlash">Added ✓</span>
+    </div>
+    <div class="add-desk-err" id="deskErr"></div>
+    <div class="desk-filter">
+      <label>Show floor:</label>
+      <select id="deskFloorFilter" onchange="renderDesks()"><option value="all">All</option></select>
+      <span id="deskCount" class="desk-count"></span>
+    </div>
+    <div id="deskList"></div>
+  </div>
+
+  <div class="section">
+    <h2>Menu &amp; categories</h2>
+    <div class="add-cat-bar">
+      <input type="text" id="newCatEn" placeholder="New category (English)">
+      <input type="text" id="newCatAr" dir="rtl" placeholder="بالعربية">
+      <button class="save-btn" onclick="addCategory()">+ Add category</button>
+      <span class="saved-flash" id="catFlash">Added ✓</span>
+    </div>
+    <div class="add-cat-err" id="catErr"></div>
+    <div id="menuEditor"></div>
+    <div class="row" style="margin:8px 0 0">
+      <button class="save-btn" onclick="saveMenu()">Save menu</button>
+      <span class="saved-flash" id="menuFlash">Saved ✓</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Backup</h2>
+    <p style="color:var(--gray);font-size:.88rem;margin:0 0 12px">Download a copy of all orders and reports (the <code>data.sqlite</code> database). Keep a recent copy so a hardware failure never loses your history.</p>
+    <button class="save-btn" onclick="downloadBackup()">⬇ Download backup</button>
+  </div>
+
+</div>
+
+<!-- QR modal -->
+<div class="qr-overlay" id="qrOverlay">
+  <div class="qr-modal">
+    <h3 id="qrTitle">Desk QR</h3>
+    <div class="qsub" id="qrUrl"></div>
+    <img id="qrImg" alt="QR code">
+    <div class="qactions">
+      <button class="qbtn primary" onclick="downloadQr()">Download PNG</button>
+      <button class="qbtn ghost" onclick="printQr()">Print</button>
+    </div>
+    <div class="qr-base-row">
+      Server address used in the QR (must be reachable from phones):
+      <input type="text" id="qrBase" onchange="refreshQr()" placeholder="http://192.168.1.50:3000">
+    </div>
+    <button class="qclose" onclick="closeQr()">Close</button>
+  </div>
+</div>
+
+<script>
+/* drink icons (shared with order page) */
+const P='#003C32', T='#014A44', A='#D1C1B0', M='#668A84', G='#7FB6C9';
+const MENU_ICONS = {
+  coffee:`<svg viewBox="0 0 64 64"><path d="M14 24h30v14a10 10 0 0 1-10 10H24a10 10 0 0 1-10-10z" fill="${P}"/><path d="M44 27h5a8 8 0 0 1 0 16h-5v-5h4a3 3 0 0 0 0-6h-4z" fill="${P}"/><rect x="10" y="50" width="38" height="4" rx="2" fill="${T}"/><path d="M24 10c3 4 0 8 0 12M32 8c3 5 0 9 0 13" stroke="${M}" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
+  saudi:`<svg viewBox="0 0 64 64"><path d="M20 30h20l-2 3h-16z" fill="${T}"/><path d="M18 22c0-2 2-3 4-3h16c2 0 4 1 4 3l-2 10a8 8 0 0 1-8 7h-4a8 8 0 0 1-8-7z" fill="${P}"/><path d="M42 24c4-1 8 1 8 5s-4 7-9 6" fill="none" stroke="${P}" stroke-width="3" stroke-linecap="round"/><rect x="24" y="42" width="16" height="3" rx="1.5" fill="${T}"/><path d="M30 10c2 3 0 6 0 8" stroke="${A}" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
+  espresso:`<svg viewBox="0 0 64 64"><path d="M20 28h20v10a9 9 0 0 1-9 9h-2a9 9 0 0 1-9-9z" fill="${P}"/><path d="M40 30h4a6 6 0 0 1 0 12h-4v-4h3a2 2 0 0 0 0-4h-3z" fill="${P}"/><rect x="16" y="49" width="28" height="4" rx="2" fill="${T}"/><path d="M28 16c2 3 0 5 0 8M34 16c2 3 0 5 0 8" stroke="${M}" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`,
+  cappuccino:`<svg viewBox="0 0 64 64"><ellipse cx="30" cy="26" rx="16" ry="5" fill="${A}"/><path d="M14 26h32v12a10 10 0 0 1-10 10H24a10 10 0 0 1-10-10z" fill="${P}"/><path d="M46 29h4a7 7 0 0 1 0 14h-4v-5h3a2.5 2.5 0 0 0 0-5h-3z" fill="${P}"/><circle cx="24" cy="24" r="2.5" fill="${P}"/><circle cx="32" cy="23" r="2" fill="${P}"/><rect x="10" y="50" width="40" height="4" rx="2" fill="${T}"/></svg>`,
+  latte:`<svg viewBox="0 0 64 64"><path d="M22 8h20l-2 48a3 3 0 0 1-3 3h-10a3 3 0 0 1-3-3z" fill="none" stroke="${P}" stroke-width="3"/><path d="M23 30h18l-1.3 22H24.3z" fill="${A}"/><path d="M24.3 52h15.4l-1 14a2 2 0 0 1-2 2h-9.4a2 2 0 0 1-2-2z" fill="${P}"/><path d="M23.5 38h17" stroke="${P}" stroke-width="2" opacity=".4"/></svg>`,
+  milk:`<svg viewBox="0 0 64 64"><path d="M24 10h16v6l3 6-1.5 30a3 3 0 0 1-3 3H25.5a3 3 0 0 1-3-3L21 22l3-6z" fill="none" stroke="${P}" stroke-width="3"/><path d="M22.2 30h19.6l-1.2 22a2 2 0 0 1-2 2H25.4a2 2 0 0 1-2-2z" fill="#F8F4F1" stroke="${P}" stroke-width="0"/><rect x="24" y="10" width="16" height="5" fill="${A}"/></svg>`,
+  'tea-black':`<svg viewBox="0 0 64 64"><path d="M14 28h30v10a11 11 0 0 1-11 11H25a11 11 0 0 1-11-11z" fill="${P}"/><path d="M44 30h4a7 7 0 0 1 0 14h-4v-5h3a2.5 2.5 0 0 0 0-5h-4z" fill="${P}"/><ellipse cx="29" cy="28" rx="15" ry="4" fill="#7a3b26"/><rect x="10" y="51" width="38" height="4" rx="2" fill="${T}"/><rect x="30" y="12" width="3" height="12" rx="1.5" fill="${M}"/><rect x="30" y="10" width="9" height="5" rx="1" fill="${A}"/></svg>`,
+  'tea-green':`<svg viewBox="0 0 64 64"><path d="M14 28h30v10a11 11 0 0 1-11 11H25a11 11 0 0 1-11-11z" fill="${P}"/><path d="M44 30h4a7 7 0 0 1 0 14h-4v-5h3a2.5 2.5 0 0 0 0-5h-4z" fill="${P}"/><ellipse cx="29" cy="28" rx="15" ry="4" fill="#5f8f4e"/><rect x="10" y="51" width="38" height="4" rx="2" fill="${T}"/><path d="M29 12c5 3 1 9-1 11-2-2-6-8-1-11z" fill="#3f7d38"/></svg>`,
+  'tea-mint':`<svg viewBox="0 0 64 64"><path d="M14 28h30v10a11 11 0 0 1-11 11H25a11 11 0 0 1-11-11z" fill="${P}"/><path d="M44 30h4a7 7 0 0 1 0 14h-4v-5h3a2.5 2.5 0 0 0 0-5h-4z" fill="${P}"/><ellipse cx="29" cy="28" rx="15" ry="4" fill="#6fae5e"/><rect x="10" y="51" width="38" height="4" rx="2" fill="${T}"/><path d="M26 12c4 1 5 6 2 9-3-1-5-6-2-9zM33 14c3 2 2 7-1 8-2-3-2-7 1-8z" fill="#3f9d4a"/></svg>`,
+  water:`<svg viewBox="0 0 64 64"><path d="M24 14h16l-2 40a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3z" fill="none" stroke="${P}" stroke-width="3"/><path d="M25.6 32h12.8l-1.4 21a2 2 0 0 1-2 2h-6a2 2 0 0 1-2-2z" fill="${G}"/><path d="M26 30c3 2 6-2 9 0" stroke="${M}" stroke-width="2" fill="none"/></svg>`
+};
+
+let pin = sessionStorage.getItem('cafe-admin-pin') || '';
+let menu = null;
+let editingId = null;
+let desks = [];
+
+const H = () => ({ 'Content-Type': 'application/json', 'x-admin-pin': pin });
+
+/* ---------- login ---------- */
+async function login(){
+  const val = document.getElementById('pinInput').value;
+  const res = await fetch('/api/admin/login', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ pin: val })
+  });
+  if (res.ok) {
+    pin = val;
+    sessionStorage.setItem('cafe-admin-pin', pin);
+    enter();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+}
+document.getElementById('pinInput').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+
+async function enter(){
+  document.getElementById('loginView').style.display = 'none';
+  document.getElementById('adminView').style.display = 'block';
+  await Promise.all([loadSettings(), loadDesks(), loadMenu(), loadDashboard(), loadEscalations()]);
+  wireRangeTabs();
+}
+
+if (pin) {
+  fetch('/api/admin/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ pin }) })
+    .then(r => { if (r.ok) enter(); else sessionStorage.removeItem('cafe-admin-pin'); });
+}
+
+/* ---------- settings ---------- */
+async function loadSettings(){
+  const s = await fetch('/api/admin/settings', { headers: H() }).then(r => r.json());
+  document.getElementById('pausedToggle').checked = s.paused;
+  document.getElementById('pauseMsg').value = s.pauseMessage || '';
+  document.getElementById('hoursToggle').checked = s.workingHours.enabled;
+  document.getElementById('hoursStart').value = s.workingHours.start;
+  document.getElementById('hoursEnd').value = s.workingHours.end;
+}
+
+async function saveSettings(){
+  const body = {
+    paused: document.getElementById('pausedToggle').checked,
+    pauseMessage: document.getElementById('pauseMsg').value.trim(),
+    workingHours: {
+      enabled: document.getElementById('hoursToggle').checked,
+      start: document.getElementById('hoursStart').value || '07:30',
+      end: document.getElementById('hoursEnd').value || '17:00'
+    }
+  };
+  await fetch('/api/admin/settings', { method:'PUT', headers: H(), body: JSON.stringify(body) });
+  flash('settingsFlash');
+}
+
+/* ---------- dashboard ---------- */
+let dashRange = 'today';
+
+function wireRangeTabs(){
+  document.querySelectorAll('.range-tab').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('.range-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      dashRange = btn.dataset.range;
+      loadDashboard();
+    };
+  });
+}
+
+async function loadDashboard(){
+  const d = await fetch('/api/admin/dashboard?range=' + dashRange, { headers: H() }).then(r => r.json());
+
+  // KPIs
+  const sat = d.totals.total ? Math.round((d.totals.thumbsUp / Math.max(1, d.totals.done)) * 100) : 0;
+  const kpis = [
+    ['Orders', d.totals.total, true],
+    ['Drinks made', d.totals.drinks || 0, false],
+    ['Avg wait', d.avgWait != null ? d.avgWait + 'm' : '—', false],
+    ['Satisfaction', d.totals.done ? sat + '%' : '—', false],
+    ['Open issues', d.escalations.open, false]
+  ];
+  document.getElementById('kpiRow').innerHTML = kpis.map(k =>
+    `<div class="kpi ${k[2] ? 'accent' : ''}"><small>${k[0]}</small><b>${k[1]}</b></div>`).join('');
+
+  renderBars('chartDrinks', d.byDrink.map(x => [x.item, x.n]), true);
+  renderBars('chartFloor', d.byFloor.map(x => ['Floor ' + x.floor, x.n]), true);
+  renderBars('chartDesk', d.byDesk.map(x => [x.desk, x.n]), false);
+  renderHours('chartHour', d.byHour);
+}
+
+function renderBars(elId, data, accentTop){
+  const el = document.getElementById(elId);
+  if (!data.length) { el.innerHTML = '<div class="dash-empty">No orders in this range yet.</div>'; return; }
+  const max = Math.max(...data.map(d => d[1]));
+  el.innerHTML = data.map((d, i) => {
+    const pct = Math.round((d[1] / max) * 100);
+    return `<div class="bar-row">
+      <span class="bar-label" title="${d[0]}">${d[0]}</span>
+      <span class="bar-track"><span class="bar-fill ${accentTop && i === 0 ? 'accent' : ''}" style="width:${pct}%"></span></span>
+      <span class="bar-val">${d[1]}</span></div>`;
+  }).join('');
+}
+
+function renderHours(elId, byHour){
+  const el = document.getElementById(elId);
+  if (!byHour.length) { el.innerHTML = '<div class="dash-empty">No orders in this range yet.</div>'; return; }
+  // build 7..18 buckets
+  const map = {}; byHour.forEach(h => { map[parseInt(h.hh, 10)] = h.n; });
+  const hours = []; for (let h = 7; h <= 18; h++) hours.push([h, map[h] || 0]);
+  const max = Math.max(1, ...hours.map(h => h[1]));
+  const bars = hours.map(h => {
+    const pct = Math.round((h[1] / max) * 100);
+    return `<div class="hour-bar ${h[1] === max && max > 0 ? 'peak' : ''}" style="height:${Math.max(2, pct)}%" title="${h[0]}:00 — ${h[1]} orders"></div>`;
+  }).join('');
+  const labels = hours.map(h => `<span>${h[0] > 12 ? h[0] - 12 : h[0]}</span>`).join('');
+  el.innerHTML = `<div class="hour-chart">${bars}</div><div class="hour-labels">${labels}</div>`;
+}
+
+/* ---------- escalations ---------- */
+async function loadEscalations(){
+  const list = await fetch('/api/admin/escalations', { headers: H() }).then(r => r.json());
+  const open = list.filter(e => e.status === 'open');
+  const badge = document.getElementById('escOpenBadge');
+  badge.textContent = open.length + ' open';
+  badge.classList.toggle('zero', open.length === 0);
+
+  const wrap = document.getElementById('escAdminList');
+  if (!list.length) { wrap.innerHTML = '<div class="dash-empty">No problems reported. 🎉</div>'; return; }
+  const catLabel = { late: 'TAKING TOO LONG', wrong: 'WRONG DRINK', quality: 'QUALITY ISSUE', missing: 'NEVER ARRIVED' };
+  wrap.innerHTML = '';
+  list.forEach(e => {
+    const card = document.createElement('div');
+    card.className = 'esc-card' + (e.status === 'resolved' ? ' resolved' : '');
+    const ago = timeAgoAdmin(e.createdAt);
+    card.innerHTML = `
+      <div class="esc-top">
+        <span class="esc-desk">${e.desk}</span>
+        <span class="esc-cat ${e.category}">${catLabel[e.category] || e.category}</span>
+        <span class="esc-time">${e.status === 'resolved' ? 'Resolved' : ago}</span>
+      </div>
+      ${e.message ? `<div class="esc-msg">${escapeHtml(e.message)}</div>` : ''}
+      ${e.orderText ? `<div class="esc-order">Order: ${escapeHtml(e.orderText)}</div>` : '<div class="esc-order">General problem (no specific order)</div>'}
+      ${e.status === 'open' ? '<button class="esc-resolve">Mark resolved</button>' : ''}`;
+    const btn = card.querySelector('.esc-resolve');
+    if (btn) btn.onclick = () => resolveEsc(e.id);
+    wrap.appendChild(card);
+  });
+}
+
+async function resolveEsc(id){
+  await fetch('/api/escalations/' + id + '/resolve', { method: 'POST', headers: H() });
+  await Promise.all([loadEscalations(), loadDashboard()]);
+}
+
+function timeAgoAdmin(iso){
+  const mins = Math.floor((Date.now() - new Date(iso)) / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return mins + ' min ago';
+  return Math.floor(mins / 60) + 'h ago';
+}
+function escapeHtml(s){ return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+/* ---------- desks ---------- */
+function floorOf(id){ const m = String(id).match(/^(\d+F)/); return m ? m[1] : 'Other'; }
+
+async function loadDesks(){
+  desks = await fetch('/api/admin/desks', { headers: H() }).then(r => r.json());
+  // populate floor filter
+  const floors = [...new Set(desks.map(d => floorOf(d.id)))].sort();
+  const sel = document.getElementById('deskFloorFilter');
+  sel.innerHTML = '<option value="all">All</option>' + floors.map(f => `<option value="${f}">Floor ${f}</option>`).join('');
+  renderDesks();
+}
+
+function renderDesks(){
+  const filter = document.getElementById('deskFloorFilter').value;
+  const list = document.getElementById('deskList');
+  const shown = desks.filter(d => filter === 'all' || floorOf(d.id) === filter);
+  document.getElementById('deskCount').textContent =
+    `${shown.length} shown · ${desks.length} total (${desks.filter(d => d.type === 'room').length} meeting rooms)`;
+
+  const scroll = document.createElement('div');
+  scroll.className = 'desk-list-scroll';
+  shown.forEach(d => {
+    const row = document.createElement('div');
+    row.className = 'desk-row' + (d.active === false ? ' inactive' : '');
+    const isRoom = d.type === 'room';
+    row.innerHTML = `
+      <span class="did">${d.id}</span>
+      <span class="dtype ${isRoom ? 'room' : ''}">${isRoom ? 'ROOM · max ' + (d.maxQty || 15) : 'DESK'}</span>
+      <button class="dqr">QR code</button>
+      <button class="dtoggle">${d.active === false ? 'Enable' : 'Disable'}</button>`;
+    row.querySelector('.dqr').onclick = () => showQr(d.id);
+    row.querySelector('.dtoggle').onclick = () => toggleDesk(d.id);
+    scroll.appendChild(row);
+  });
+  list.innerHTML = '';
+  list.appendChild(scroll);
+}
+
+async function addDesk(){
+  const id = document.getElementById('newDeskId').value.trim();
+  const type = document.getElementById('newDeskType').value;
+  const err = document.getElementById('deskErr');
+  err.style.display = 'none';
+  if (!id) { err.textContent = 'Enter a desk ID first.'; err.style.display = 'block'; return; }
+
+  const res = await fetch('/api/admin/desks', {
+    method: 'POST', headers: H(), body: JSON.stringify({ id, type })
+  });
+  const data = await res.json();
+  if (!res.ok) { err.textContent = data.error || 'Could not add desk.'; err.style.display = 'block'; return; }
+
+  document.getElementById('newDeskId').value = '';
+  flash('deskFlash');
+  await loadDesks();
+}
+
+async function toggleDesk(id){
+  await fetch('/api/admin/desks/' + encodeURIComponent(id) + '/toggle', { method: 'POST', headers: H() });
+  await loadDesks();
+}
+
+/* ---------- desk QR ---------- */
+let qrDeskId = null;
+let qrData = null;
+
+async function showQr(id){
+  qrDeskId = id;
+  document.getElementById('qrTitle').textContent = id;
+  document.getElementById('qrOverlay').classList.add('show');
+  // default base: whatever address the admin is on, minus any trailing path
+  const savedBase = localStorage.getItem('cupcall-qr-base') || (location.origin);
+  document.getElementById('qrBase').value = savedBase;
+  await refreshQr();
+}
+
+async function refreshQr(){
+  const base = document.getElementById('qrBase').value.trim();
+  if (base) localStorage.setItem('cupcall-qr-base', base);
+  const img = document.getElementById('qrImg');
+  const urlEl = document.getElementById('qrUrl');
+  img.style.opacity = '.4';
+  try {
+    const q = new URLSearchParams({ base: base || location.origin });
+    qrData = await fetch(`/api/admin/desks/${encodeURIComponent(qrDeskId)}/qr?` + q, { headers: H() }).then(r => r.json());
+    img.src = qrData.dataUrl;
+    img.style.opacity = '1';
+    urlEl.textContent = qrData.url;
+  } catch (e) {
+    urlEl.textContent = 'Could not generate QR.';
+  }
+}
+
+function downloadQr(){
+  if (!qrData) return;
+  const a = document.createElement('a');
+  a.href = qrData.dataUrl;
+  a.download = qrDeskId + '.png';
+  a.click();
+}
+
+function printQr(){
+  if (!qrData) return;
+  const w = window.open('', '_blank');
+  w.document.write(`<html><head><title>${qrDeskId}</title>
+    <style>body{font-family:sans-serif;text-align:center;padding:40px;color:#003C32}
+    img{width:300px;border:3px solid #003C32;border-radius:16px;padding:12px}
+    .id{font-size:28px;font-weight:bold;margin-top:16px}
+    .cap{color:#D1C1B0;letter-spacing:3px;font-size:12px;font-weight:bold;margin-top:8px}</style></head>
+    <body><img src="${qrData.dataUrl}"><div class="cap">SCAN TO ORDER</div><div class="id">${qrDeskId}</div>
+    <script>window.onload=()=>{window.print();}<\/script></body></html>`);
+  w.document.close();
+}
+
+function closeQr(){
+  document.getElementById('qrOverlay').classList.remove('show');
+}
+
+/* ---------- menu ---------- */
+async function loadMenu(){
+  menu = await fetch('/api/admin/menu', { headers: H() }).then(r => r.json());
+  menu.categories.forEach(c => c.items.forEach(i => { i._saved = true; }));
+  renderMenu();
+}
+
+function renderMenu(){
+  const wrap = document.getElementById('menuEditor');
+  wrap.innerHTML = '';
+  menu.categories.forEach(cat => {
+    const block = document.createElement('div');
+    block.className = 'cat-block';
+    const title = document.createElement('div');
+    title.className = 'cat-title';
+    title.innerHTML = `<span>${cat.name} · ${cat.name_ar || ''}</span>`;
+    const actions = document.createElement('div');
+    actions.className = 'cat-actions';
+    const renameBtn = document.createElement('button');
+    renameBtn.className = 'cat-mini';
+    renameBtn.textContent = '✏️ Rename';
+    renameBtn.onclick = () => renameCategory(cat);
+    const delBtn = document.createElement('button');
+    delBtn.className = 'cat-mini del';
+    delBtn.textContent = '🗑';
+    delBtn.title = 'Delete category';
+    delBtn.onclick = () => deleteCategory(cat);
+    const addBtn = document.createElement('button');
+    addBtn.className = 'add-btn';
+    addBtn.textContent = '+ Add drink';
+    addBtn.onclick = () => addItem(cat.id);
+    actions.appendChild(renameBtn);
+    actions.appendChild(delBtn);
+    actions.appendChild(addBtn);
+    title.appendChild(actions);
+    block.appendChild(title);
+    cat.items.forEach(it => {
+      block.appendChild(itemRow(cat, it));
+      if (editingId === it.id) block.appendChild(editForm(cat, it));
+    });
+    wrap.appendChild(block);
+  });
+}
+
+function itemRow(cat, it){
+  const row = document.createElement('div');
+  row.className = 'item-row' + (it.available ? '' : ' unavailable');
+  row.innerHTML = `
+    <div class="mini-icon">${MENU_ICONS[it.icon] || MENU_ICONS.coffee}</div>
+    <div class="names">
+      <div class="n-en">${it.name}</div>
+      <div class="n-ar">${it.name_ar || ''}</div>
+    </div>
+    <label class="toggle" title="Available">
+      <input type="checkbox" ${it.available ? 'checked' : ''}>
+      <span class="slider"></span>
+    </label>
+    <button class="icon-btn" title="Edit">✏️</button>
+    <button class="icon-btn del" title="Delete">🗑</button>`;
+
+  row.querySelector('input[type=checkbox]').onchange = e => {
+    it.available = e.target.checked;
+    markDirty(); renderMenu();
+  };
+  row.querySelector('.icon-btn:not(.del)').onclick = () => {
+    editingId = editingId === it.id ? null : it.id;
+    renderMenu();
+  };
+  row.querySelector('.icon-btn.del').onclick = () => {
+    if (!confirm(`Delete "${it.name}"?`)) return;
+    cat.items = cat.items.filter(x => x.id !== it.id);
+    markDirty(); renderMenu();
+  };
+  return row;
+}
+
+function editForm(cat, it){
+  const groupsText = (it.optionGroups || []).map(g => `${g.name}: ${g.choices.join(', ')}`).join('\n');
+  const iconOptions = Object.keys(MENU_ICONS).map(k =>
+    `<option value="${k}" ${it.icon === k ? 'selected' : ''}>${k}</option>`).join('');
+  const f = document.createElement('div');
+  f.className = 'edit-form';
+  f.innerHTML = `
+    <div><label>Name (English)</label><input type="text" data-f="name" value="${(it.name||'').replace(/"/g,'&quot;')}"></div>
+    <div><label>Name (Arabic)</label><input type="text" data-f="name_ar" dir="rtl" value="${(it.name_ar||'').replace(/"/g,'&quot;')}"></div>
+    <div><label>Icon</label>
+      <div class="icon-pick-row">
+        <div class="icon-preview" id="iconPrev-${it.id}">${MENU_ICONS[it.icon] || MENU_ICONS.coffee}</div>
+        <select data-f="icon" class="icon-select">${iconOptions}</select>
+      </div></div>
+    <div><label>Options — one group per line</label>
+      <textarea data-f="groups" rows="3" style="width:100%;border:1.5px solid var(--pale);border-radius:10px;padding:9px 12px;font-size:.85rem;font-family:inherit">${groupsText}</textarea>
+      <div class="hint">Format: Sugar: None, Less, Regular, Extra — leave empty for no options</div></div>
+    <div class="edit-actions">
+      <button class="save-btn" style="padding:9px 20px">Apply</button>
+      <button class="save-btn secondary" style="padding:9px 20px">Cancel</button>
+    </div>`;
+
+  // live icon preview when the dropdown changes
+  const iconSel = f.querySelector('[data-f=icon]');
+  const prev = f.querySelector('#iconPrev-' + it.id);
+  iconSel.onchange = () => { prev.innerHTML = MENU_ICONS[iconSel.value] || MENU_ICONS.coffee; };
+
+  const [applyBtn, cancelBtn] = f.querySelectorAll('.edit-actions button');
+  applyBtn.onclick = async () => {
+    it.name = f.querySelector('[data-f=name]').value.trim() || it.name;
+    it.name_ar = f.querySelector('[data-f=name_ar]').value.trim();
+    it.icon = f.querySelector('[data-f=icon]').value;
+    it.optionGroups = f.querySelector('[data-f=groups]').value
+      .split('\n').map(l => l.trim()).filter(Boolean)
+      .map(l => {
+        const [name, rest] = l.split(':');
+        return { name: (name || '').trim(), choices: (rest || '').split(',').map(c => c.trim()).filter(Boolean) };
+      })
+      .filter(g => g.name && g.choices.length);
+    editingId = null;
+    renderMenu();
+    await saveMenu();   // persist immediately so nothing is lost
+  };
+  cancelBtn.onclick = () => {
+    // if this was a brand-new unsaved drink, remove it on cancel
+    if (String(it.id).startsWith('item-') && !it._saved) {
+      cat.items = cat.items.filter(x => x.id !== it.id);
+    }
+    editingId = null;
+    renderMenu();
+  };
+  return f;
+}
+
+function addItem(catId){
+  const cat = menu.categories.find(c => c.id === catId);
+  if (!cat) return;
+  const item = {
+    id: 'item-' + Date.now().toString(36),
+    name: 'New Drink',
+    name_ar: '',
+    available: true,
+    icon: 'coffee',
+    maxQty: 5,
+    optionGroups: [ { name: 'Sugar', choices: ['None', 'Less', 'Regular', 'Extra'] } ]
+  };
+  cat.items.push(item);
+  editingId = item.id;
+  markDirty();
+  renderMenu();
+  // scroll the newly-opened edit form into view so it's obvious it was added
+  setTimeout(() => {
+    const forms = document.querySelectorAll('.edit-form');
+    const last = forms[forms.length - 1];
+    if (last) last.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 50);
+}
+
+async function saveMenu(){
+  try {
+    // build a clean copy without internal flags
+    const clean = JSON.parse(JSON.stringify(menu));
+    clean.categories.forEach(c => c.items.forEach(i => { delete i._saved; }));
+    const res = await fetch('/api/admin/menu', { method:'PUT', headers: H(), body: JSON.stringify(clean) });
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}));
+      alert('Could not save the menu: ' + (d.error || res.status));
+      return;
+    }
+    menu.categories.forEach(c => c.items.forEach(i => { i._saved = true; }));
+    document.getElementById('menuDirty').style.display = 'none';
+    flash('menuFlash');
+  } catch (e) {
+    alert('Could not save the menu — is the server running? ' + e.message);
+  }
+}
+
+function markDirty(){
+  document.getElementById('menuDirty').style.display = 'inline';
+}
+
+/* ---------- categories ---------- */
+async function addCategory(){
+  const name = document.getElementById('newCatEn').value.trim();
+  const name_ar = document.getElementById('newCatAr').value.trim();
+  const err = document.getElementById('catErr');
+  err.style.display = 'none';
+  if (!name) { err.textContent = 'Enter a category name.'; err.style.display = 'block'; return; }
+  const res = await fetch('/api/admin/categories', { method:'POST', headers: H(), body: JSON.stringify({ name, name_ar }) });
+  if (!res.ok) { const d = await res.json().catch(()=>({})); err.textContent = d.error || 'Could not add.'; err.style.display = 'block'; return; }
+  document.getElementById('newCatEn').value = '';
+  document.getElementById('newCatAr').value = '';
+  flash('catFlash');
+  await loadMenu();
+}
+
+async function renameCategory(cat){
+  const name = prompt('Category name (English):', cat.name);
+  if (name === null) return;
+  const name_ar = prompt('Category name (Arabic):', cat.name_ar || '');
+  if (name_ar === null) return;
+  const res = await fetch('/api/admin/categories/' + encodeURIComponent(cat.id), { method:'PUT', headers: H(), body: JSON.stringify({ name, name_ar }) });
+  if (!res.ok) { alert('Could not rename.'); return; }
+  await loadMenu();
+}
+
+async function deleteCategory(cat){
+  if (cat.items && cat.items.length) {
+    alert(`"${cat.name}" still has ${cat.items.length} drink(s). Move or delete them first.`);
+    return;
+  }
+  if (!confirm(`Delete the empty category "${cat.name}"?`)) return;
+  const res = await fetch('/api/admin/categories/' + encodeURIComponent(cat.id), { method:'DELETE', headers: H() });
+  if (!res.ok) { const d = await res.json().catch(()=>({})); alert(d.error === 'has_items' ? 'Category still has drinks.' : 'Could not delete.'); return; }
+  await loadMenu();
+}
+
+/* ---------- backup ---------- */
+async function downloadBackup(){
+  try {
+    const res = await fetch('/api/admin/backup', { headers: H() });
+    if (!res.ok) { alert('Backup not available yet.'); return; }
+    const blob = await res.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'tgahw-backup-' + new Date().toISOString().slice(0,10) + '.sqlite';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  } catch (e) { alert('Backup failed: ' + e.message); }
+}
+
+function flash(id){
+  const el = document.getElementById(id);
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1800);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="/fonts.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تَقْهوَّ</title>
+<style>
+  :root{
+    --primary:#003C32;
+    --dark-teal:#014A44;
+    --muted-teal:#668A84;
+    --gold:#D1C1B0;
+    --ice:#E9F1F1;
+    --pale:#BED8D8;
+    --cream:#F3ECE6;
+    --off-white:#F8F4F1;
+    --gray:#525455;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:'Plex Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+    background:var(--cream);
+    color:var(--primary);
+    min-height:100vh;
+  }
+
+  /* ===== MENU VIEW — Concept B (light & warm) ===== */
+  header{
+    background:linear-gradient(155deg,var(--primary),var(--dark-teal));
+    color:var(--off-white);
+    padding:22px 20px 46px;
+    border-radius:0 0 30px 30px;
+    text-align:center;
+    position:relative;
+  }
+  .head-row{display:block}
+  header h1{font-size:2rem;font-weight:700;letter-spacing:0}
+  header h1 .accent{color:var(--gold)}
+  header p{color:var(--pale);font-size:.82rem;margin-top:5px}
+  .lang-btn{
+    position:absolute;top:22px;
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.28);
+    color:var(--off-white);
+    border-radius:999px;padding:6px 14px;
+    font-size:.82rem;font-weight:600;cursor:pointer;
+    font-family:inherit;
+  }
+  html[dir="ltr"] .lang-btn{right:20px}
+  html[dir="rtl"] .lang-btn{left:20px}
+
+  .desk-ticket{
+    background:var(--off-white);
+    color:var(--primary);
+    width:fit-content;min-width:200px;
+    margin:-26px auto 12px;
+    padding:12px 24px;
+    border-radius:16px;
+    box-shadow:0 8px 24px rgba(0,60,50,.14);
+    text-align:center;
+  }
+  .desk-ticket small{display:block;font-size:.66rem;font-weight:700;color:var(--dark-teal)}
+  /* Latin label gets the tracked/uppercase treatment; Arabic must not (it breaks the connected script) */
+  html[dir="ltr"] .desk-ticket small{letter-spacing:1.4px;text-transform:uppercase}
+  .desk-ticket strong{font-size:1.4rem;font-weight:800}
+
+  .repeat-wrap{padding:0 16px 12px;display:none}  .repeat-btn{
+    width:100%;display:flex;align-items:center;gap:12px;
+    background:var(--off-white);
+    border:1.5px dashed var(--gold);
+    border-radius:14px;padding:12px 14px;cursor:pointer;
+    font-family:inherit;text-align:inherit;
+  }
+  .repeat-btn .star{
+    width:36px;height:36px;border-radius:10px;background:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;flex-shrink:0;color:var(--primary);
+  }
+  .repeat-btn .r-title{font-size:.78rem;font-weight:700;color:var(--muted-teal)}
+  html[dir="ltr"] .repeat-btn .r-title{text-transform:uppercase;letter-spacing:.8px}
+  .repeat-btn .r-item{font-size:.95rem;font-weight:700;color:var(--primary);margin-top:1px}
+
+  .tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 16px 12px;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{
+    flex:0 0 auto;background:var(--off-white);
+    border:1.5px solid var(--pale);color:var(--dark-teal);
+    border-radius:999px;padding:8px 16px;
+    font-size:.9rem;font-weight:600;cursor:pointer;font-family:inherit;
+  }
+  .tab.active{background:var(--primary);border-color:var(--primary);color:#fff}
+
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:4px 20px 30px}
+  @media(min-width:560px){.grid{grid-template-columns:repeat(3,1fr)}}
+  .card{
+    background:var(--off-white);border-radius:18px;overflow:hidden;cursor:pointer;
+    box-shadow:0 2px 10px rgba(0,60,50,.06);transition:transform .1s;
+  }
+  .card:active{transform:scale(.97)}
+  .card .icon-wrap{width:100%;height:88px;display:flex;align-items:center;justify-content:center;background:var(--ice)}
+  .card .icon-wrap svg{width:48px;height:48px}
+  .card .label{padding:10px 10px 6px;font-size:.9rem;font-weight:600;color:var(--primary);text-align:center}
+  .card .label-en{padding:0 10px 12px;font-size:.72rem;color:var(--muted-teal);text-align:center}
+
+  /* ===== DETAIL VIEW ===== */
+  #detailView{display:none;padding-bottom:100px}
+  .detail-bar{
+    background:var(--primary);color:var(--off-white);
+    padding:14px 16px;display:flex;align-items:center;gap:12px;
+    position:sticky;top:0;z-index:5;
+  }
+  .back-btn{background:none;border:none;color:var(--off-white);font-size:1.3rem;cursor:pointer;line-height:1;padding:2px 6px}
+  .detail-bar .title{font-size:1.05rem;font-weight:600}
+  .detail-bar .desk-chip{
+    background:var(--gold);color:var(--primary);
+    border-radius:8px;padding:4px 12px;font-size:.85rem;font-weight:700;
+  }
+  html[dir="ltr"] .detail-bar .desk-chip{margin-left:auto}
+  html[dir="rtl"] .detail-bar .desk-chip{margin-right:auto}
+  .detail-photo{width:100%;height:160px;display:flex;align-items:center;justify-content:center;background:var(--ice)}
+  .detail-photo svg{width:90px;height:90px}
+
+  .opt-group{padding:16px 16px 0}
+  .g-name{font-size:.85rem;font-weight:700;color:var(--dark-teal);margin-bottom:8px}
+  .chips{display:flex;gap:7px;flex-wrap:wrap}
+  .chip{
+    border:1.5px solid var(--pale);background:var(--off-white);color:var(--dark-teal);
+    border-radius:999px;padding:8px 16px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:inherit;
+  }
+  .chip.active{background:var(--dark-teal);border-color:var(--dark-teal);color:#fff}
+
+  .qty-row{display:flex;align-items:center;gap:14px}
+  .qty-btn{
+    width:42px;height:42px;border-radius:12px;
+    border:1.5px solid var(--pale);background:var(--off-white);
+    font-size:1.3rem;font-weight:700;color:var(--dark-teal);cursor:pointer;
+  }
+  .qty-btn:disabled{opacity:.35}
+  .qty-val{font-size:1.3rem;font-weight:800;min-width:28px;text-align:center}
+
+  .note-wrap{padding:18px 16px 0}
+  .note-wrap textarea{
+    width:100%;border:1.5px solid var(--pale);border-radius:12px;
+    background:var(--off-white);padding:11px 14px;font-size:.92rem;
+    color:var(--primary);outline:none;resize:none;height:70px;font-family:inherit;
+  }
+  .note-wrap textarea:focus{border-color:var(--muted-teal)}
+
+  .send-bar{
+    position:fixed;left:0;right:0;bottom:0;
+    padding:14px 16px calc(14px + env(safe-area-inset-bottom));
+    background:linear-gradient(to top,var(--ice) 70%,transparent);
+  }
+  .send-btn{
+    width:100%;border:none;border-radius:16px;
+    background:var(--primary);color:#fff;
+    font-size:1rem;font-weight:700;padding:16px;cursor:pointer;
+    box-shadow:0 6px 16px rgba(0,60,50,.25);font-family:inherit;
+  }
+  .send-btn:disabled{opacity:.5;box-shadow:none}
+
+  .error-msg{
+    display:none;margin:12px 16px 0;padding:12px 14px;border-radius:12px;
+    background:#fdecea;color:#8a2f24;font-size:.85rem;
+  }
+
+  /* ===== STATUS / SUCCESS VIEW ===== */
+  #statusView{display:none;text-align:center;padding:60px 26px}
+  .pulse-ring{
+    width:84px;height:84px;margin:0 auto;border-radius:50%;
+    background:var(--gold);display:flex;align-items:center;justify-content:center;
+    font-size:2.1rem;color:var(--primary);
+  }
+  .pulse-ring.waiting{animation:pulse 1.8s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(251,174,64,.45)}50%{box-shadow:0 0 0 16px rgba(251,174,64,0)}}
+  #statusView h2{margin:18px 0 8px;color:var(--primary)}
+  #statusView .sub{color:var(--gray);font-size:.95rem;line-height:1.55}
+  .queue-badge{
+    display:inline-block;margin-top:14px;
+    background:var(--off-white);border:1.5px solid var(--pale);
+    border-radius:999px;padding:9px 20px;
+    font-size:.92rem;font-weight:700;color:var(--dark-teal);
+  }
+  .fb-wrap{display:none;margin-top:22px}
+  .fb-btn{
+    background:var(--off-white);border:1.5px solid var(--pale);
+    border-radius:16px;padding:14px 30px;font-size:1.6rem;cursor:pointer;
+  }
+  .fb-btn.done{background:var(--gold);border-color:var(--gold)}
+  .fb-label{font-size:.85rem;color:var(--muted-teal);margin-top:8px}
+  .again-btn{
+    margin-top:26px;border:1.5px solid var(--primary);background:transparent;
+    color:var(--primary);border-radius:999px;padding:12px 28px;
+    font-weight:700;font-size:.95rem;cursor:pointer;font-family:inherit;
+  }
+
+  /* ===== CLOSED VIEW ===== */
+  #closedView{display:none;text-align:center;padding:90px 30px}
+  #closedView .moon{
+    width:84px;height:84px;margin:0 auto;border-radius:50%;
+    background:var(--pale);display:flex;align-items:center;justify-content:center;font-size:2rem;
+  }
+  #closedView h2{margin:18px 0 8px;color:var(--primary)}
+  #closedView p{color:var(--gray);font-size:.95rem;line-height:1.5}
+
+  /* wait strip on menu header */
+  .wait-strip{margin:10px 16px 0;background:var(--dark-teal);border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--pale)}
+  .wait-strip .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0}
+  .wait-strip.closed .dot{background:#c98}
+
+  /* call the pantry (rooms only) */
+  .call-pantry-wrap{margin:12px 16px 0}
+  .call-pantry-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--dark-teal);color:var(--off-white);border:none;border-radius:14px;padding:14px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit}
+  .call-pantry-btn .cp-icon{font-size:1.2rem}
+  .call-sheet{display:none;margin-top:8px;gap:8px;grid-template-columns:1fr 1fr}
+  .call-sheet.open{display:grid}
+  .call-opt{display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--off-white);border:1.5px solid var(--pale);border-radius:14px;padding:16px 8px;font-size:.9rem;font-weight:600;color:var(--dark-teal);cursor:pointer;font-family:inherit}
+  .call-opt .co-ic{width:34px;height:34px}
+  .call-opt .co-ic svg{width:34px;height:34px}
+
+  /* escalation footer link */
+  .esc-footer{margin:14px 16px 22px;border-top:1px solid var(--pale);padding-top:12px;text-align:center;font-size:.85rem;color:var(--muted-teal)}
+  .esc-footer a{color:var(--dark-teal);font-weight:700;text-decoration:underline;cursor:pointer;margin-inline-start:6px}
+
+  /* escalation views */
+  #escView{display:none;padding-bottom:100px}
+  #escSentView{display:none;text-align:center;padding:60px 26px}
+  #escSentView h2{margin:18px 0 8px;color:var(--primary)}
+  #escSentView .sub{color:var(--gray);font-size:.95rem;line-height:1.55}
+  .esc-order-pick{border:1.5px solid var(--pale);background:var(--off-white);border-radius:12px;padding:11px 13px;margin-bottom:8px;cursor:pointer;font-size:.9rem}
+  .esc-order-pick.sel{border-color:var(--gold);background:#fff}
+  .esc-order-pick .sub{font-size:.78rem;color:var(--muted-teal);margin-top:2px}
+  .esc-order-pick.none{color:var(--muted-teal);font-style:italic}
+</style>
+</head>
+<body>
+
+<!-- MENU -->
+<div id="menuView">
+  <header>
+    <div class="head-row">
+      <h1><span class="accent">تَقْهوَّ</span></h1>
+      <p data-i18n="tagline">Pick a drink — it comes to your desk.</p>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">عربي</button>
+    </div>
+  </header>
+  <div class="desk-ticket">
+    <small data-i18n="yourDesk">Your desk</small>
+    <strong id="deskLabel">—</strong>
+  </div>
+  <div class="wait-strip" id="waitStrip" style="display:none">
+    <span class="dot"></span><span id="waitText"></span>
+  </div>
+  <div class="call-pantry-wrap" id="callPantryWrap" style="display:none">
+    <button class="call-pantry-btn" onclick="toggleCallSheet()">
+      <span class="cp-icon">🔔</span>
+      <span data-i18n="callPantry">Call the pantry</span>
+    </button>
+    <div class="call-sheet" id="callSheet">
+      <button class="call-opt" onclick="scrollToMenu()">
+        <span class="co-ic"><svg viewBox="0 0 64 64" fill="none"><path d="M16 26h26v12a10 10 0 0 1-10 10H26a10 10 0 0 1-10-10z" fill="#014A44"/><path d="M42 29h4a7 7 0 0 1 0 14h-4" stroke="#014A44" stroke-width="4"/><rect x="12" y="50" width="34" height="4" rx="2" fill="#668A84"/></svg></span>
+        <span data-i18n="callOrder">Order drinks</span></button>
+      <button class="call-opt" onclick="sendCall('refill')">
+        <span class="co-ic"><svg viewBox="0 0 64 64" fill="none"><path d="M48 22a20 20 0 1 0 4 16" stroke="#014A44" stroke-width="5" stroke-linecap="round"/><path d="M50 14v10h-10" stroke="#014A44" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span data-i18n="callRefill">Refill</span></button>
+      <button class="call-opt" onclick="sendCall('clear')">
+        <span class="co-ic"><svg viewBox="0 0 64 64" fill="none"><rect x="10" y="24" width="44" height="6" rx="3" fill="#014A44"/><path d="M16 30v22M48 30v22" stroke="#014A44" stroke-width="5" stroke-linecap="round"/><path d="M24 30v10M40 30v10" stroke="#668A84" stroke-width="4" stroke-linecap="round"/></svg></span>
+        <span data-i18n="callClear">Clear the table</span></button>
+      <button class="call-opt" onclick="sendCall('other')">
+        <span class="co-ic"><svg viewBox="0 0 64 64" fill="none"><path d="M12 18h40a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H26l-12 10V46h-2a4 4 0 0 1-4-4V22a4 4 0 0 1 4-4z" fill="#014A44"/></svg></span>
+        <span data-i18n="callOther">Something else</span></button>
+    </div>
+  </div>
+  <div class="repeat-wrap" id="repeatWrap">
+    <button class="repeat-btn" onclick="repeatLast()">
+      <span class="star">★</span>
+      <span>
+        <div class="r-title" data-i18n="usual">Order my usual</div>
+        <div class="r-item" id="repeatText"></div>
+      </span>
+    </button>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="grid" id="grid"></div>
+  <div class="esc-footer">
+    <span data-i18n="problemQ">Problem with an order?</span>
+    <a onclick="openEscalation()" data-i18n="reportIt">Report it</a>
+  </div>
+</div>
+
+<!-- ESCALATION -->
+<div id="escView">
+  <div class="detail-bar">
+    <button class="back-btn" onclick="closeEscalation()" aria-label="Back" id="escBackArrow">←</button>
+    <span class="title" data-i18n="reportTitle">Report a problem</span>
+    <span class="desk-chip" id="escDeskChip"></span>
+  </div>
+  <div class="opt-group">
+    <div class="g-name" data-i18n="whichOrder">Which order?</div>
+    <div id="escOrders"></div>
+  </div>
+  <div class="opt-group">
+    <div class="g-name" data-i18n="whatWrong">What went wrong?</div>
+    <div class="chips" id="escCats"></div>
+  </div>
+  <div class="note-wrap">
+    <div class="g-name" data-i18n="tellMore">Tell us more (optional)</div>
+    <textarea id="escMsg" maxlength="200"></textarea>
+  </div>
+  <div class="error-msg" id="escErr"></div>
+  <div class="send-bar">
+    <button class="send-btn" id="escSendBtn" onclick="sendEscalation()"></button>
+  </div>
+</div>
+
+<!-- ESCALATION SENT -->
+<div id="escSentView">
+  <div class="pulse-ring" style="animation:none">✓</div>
+  <h2 id="escSentTitle"></h2>
+  <p class="sub" id="escSentText"></p>
+  <br>
+  <button class="again-btn" onclick="backToMenu()" data-i18n="orderAgain">Order something else</button>
+</div>
+
+<!-- DETAIL -->
+<div id="detailView">
+  <div class="detail-bar">
+    <button class="back-btn" onclick="showMenu()" aria-label="Back" id="backArrow">←</button>
+    <span class="title" id="detailTitle"></span>
+    <span class="desk-chip" id="deskChip"></span>
+  </div>
+  <div class="detail-photo" id="detailPhoto"></div>
+  <div id="optionGroups"></div>
+  <div class="opt-group">
+    <div class="g-name" data-i18n="quantity">Quantity</div>
+    <div class="qty-row">
+      <button class="qty-btn" id="qtyMinus" onclick="changeQty(-1)">−</button>
+      <span class="qty-val" id="qtyVal">1</span>
+      <button class="qty-btn" id="qtyPlus" onclick="changeQty(1)">+</button>
+      <span style="font-size:.8rem;color:var(--muted-teal)" data-i18n="guestHint">Ordering for guests? Increase the quantity.</span>
+    </div>
+  </div>
+  <div class="note-wrap">
+    <div class="g-name" data-i18n="note">Note (optional)</div>
+    <textarea id="note" maxlength="120"></textarea>
+  </div>
+  <div class="error-msg" id="errorMsg"></div>
+  <div class="send-bar">
+    <button class="send-btn" id="sendBtn"></button>
+  </div>
+</div>
+
+<!-- STATUS / SUCCESS -->
+<div id="statusView">
+  <div class="pulse-ring waiting" id="statusIcon">☕</div>
+  <h2 id="statusTitle"></h2>
+  <p class="sub" id="statusText"></p>
+  <div class="queue-badge" id="queueBadge" style="display:none"></div>
+  <div class="fb-wrap" id="fbWrap">
+    <button class="fb-btn" id="fbBtn" onclick="sendFeedback()">👍</button>
+    <div class="fb-label" id="fbLabel"></div>
+  </div>
+  <br>
+  <button class="again-btn" onclick="backToMenu()" data-i18n="orderAgain">Order something else</button>
+</div>
+
+<!-- CLOSED / PAUSED -->
+<div id="closedView">
+  <div class="moon">🌙</div>
+  <h2 id="closedTitle"></h2>
+  <p id="closedText"></p>
+</div>
+
+<script>
+/* ============ i18n ============ */
+const I18N = {
+  en: {
+    tagline: 'Pick a drink — it comes to your desk.',
+    yourDesk: 'Your desk',
+    usual: 'Order my usual',
+    quantity: 'Quantity',
+    guestHint: 'Ordering for guests? Increase the quantity.',
+    note: 'Note (optional)',
+    notePh: 'e.g. extra hot, small cup, less ice…',
+    send: 'Send order',
+    sending: 'Sending…',
+    orderAgain: 'Order something else',
+    preparing: 'Order received',
+    preparingSub: (item, desk) => `${item} is being prepared for desk ${desk}.`,
+    ahead: n => n <= 1 ? "You're next in line" : `${n - 1} order${n - 1 > 1 ? 's' : ''} ahead of you`,
+    delivered: 'Delivered',
+    deliveredSub: 'Enjoy your drink!',
+    fbAsk: 'Happy with the service?',
+    fbThanks: 'Thanks for the feedback!',
+    waitOpen: m => `Pantry is open · about ${m} min wait`,
+    waitClosed: 'Pantry is closed right now',
+    problemQ: 'Problem with an order?',
+    reportIt: 'Report it',
+    reportTitle: 'Report a problem',
+    whichOrder: 'Which order?',
+    whatWrong: 'What went wrong?',
+    tellMore: 'Tell us more (optional)',
+    tellMorePh: 'Anything else the pantry should know…',
+    noRecent: 'A general problem (no specific order)',
+    sendReport: 'Send report',
+    sendingReport: 'Sending…',
+    reportSent: 'Report sent',
+    reportSentSub: 'Thanks — the pantry has been notified and will sort it out.',
+    callPantry: 'Call the pantry',
+    callOrder: 'Order drinks',
+    callRefill: 'Refill',
+    callClear: 'Clear the table',
+    callOther: 'Something else',
+    callSent: 'The pantry has been notified',
+    callSentSub: 'Someone will come to the room shortly.',
+    dupConfirm: 'You just ordered this. Send another one?',
+    outOfStock: 'Sorry, that drink is out of stock right now.',
+    badDeskTitle: 'Invalid QR code',
+    badDeskText: 'This QR code isn\u2019t recognised. Please scan the sticker on your desk, or ask the pantry for help.',
+    catLate: 'Taking too long',
+    catWrong: 'Wrong drink',
+    catQuality: 'Quality issue',
+    catMissing: 'Never arrived',
+    pickCat: 'Please choose what went wrong.',
+    closedTitle: 'تَقْهوَّ is closed',
+    closedHours: (s, e) => `Service hours: ${s} – ${e}. See you then!`,
+    pausedTitle: 'Service is paused',
+    pausedDefault: 'The café is taking a short break. Please try again soon.',
+    sugar: 'Sugar', mint: 'Mint', temperature: 'Temperature',
+    choices: { 'None': 'None', 'Less': 'Less', 'Regular': 'Regular', 'Extra': 'Extra',
+      'No mint': 'No mint', 'With mint': 'With mint', 'Cold': 'Cold', 'Room temperature': 'Room temperature' }
+  },
+  ar: {
+    tagline: 'اختر مشروبك — نوصله إلى مكتبك',
+    yourDesk: 'مكتبك',
+    usual: 'اطلب طلبي المعتاد',
+    quantity: 'الكمية',
+    guestHint: 'تطلب لضيوف؟ زد الكمية.',
+    note: 'ملاحظة (اختياري)',
+    notePh: 'مثال: حار زيادة، كوب صغير، ثلج أقل…',
+    send: 'إرسال الطلب',
+    sending: 'جاري الإرسال…',
+    orderAgain: 'اطلب شيئًا آخر',
+    preparing: 'تم استلام الطلب',
+    preparingSub: (item, desk) => `${item} قيد التحضير لمكتب ${desk}.`,
+    ahead: n => n <= 1 ? 'أنت التالي في الطابور' : `أمامك ${n - 1} ${n - 1 > 2 ? 'طلبات' : 'طلب'}`,
+    delivered: 'تم التوصيل',
+    deliveredSub: 'بالعافية!',
+    fbAsk: 'راضٍ عن الخدمة؟',
+    fbThanks: 'شكرًا لتقييمك!',
+    waitOpen: m => `الخدمة متاحة · وقت الانتظار حوالي ${m} دقيقة`,
+    waitClosed: 'الخدمة مغلقة حاليًا',
+    problemQ: 'مشكلة في الطلب؟',
+    reportIt: 'أبلغ عنها',
+    reportTitle: 'الإبلاغ عن مشكلة',
+    whichOrder: 'أي طلب؟',
+    whatWrong: 'ما المشكلة؟',
+    tellMore: 'أخبرنا المزيد (اختياري)',
+    tellMorePh: 'أي شيء يجب أن تعرفه الخدمة…',
+    noRecent: 'مشكلة عامة (بدون طلب محدد)',
+    sendReport: 'إرسال البلاغ',
+    sendingReport: 'جاري الإرسال…',
+    reportSent: 'تم إرسال البلاغ',
+    reportSentSub: 'شكرًا — تم إبلاغ الخدمة وسيتم حل المشكلة.',
+    callPantry: 'استدعاء الخدمة',
+    callOrder: 'طلب مشروبات',
+    callRefill: 'إعادة تعبئة',
+    callClear: 'تنظيف الطاولة',
+    callOther: 'شيء آخر',
+    callSent: 'تم إبلاغ الخدمة',
+    callSentSub: 'سيحضر أحد إلى الغرفة قريبًا.',
+    dupConfirm: 'لقد طلبت هذا للتو. هل تريد طلب آخر؟',
+    outOfStock: 'عذرًا، هذا المشروب غير متوفر حاليًا.',
+    badDeskTitle: 'رمز QR غير صالح',
+    badDeskText: 'رمز QR هذا غير معروف. امسح الملصق الموجود على مكتبك، أو اطلب المساعدة من الخدمة.',
+    catLate: 'تأخر كثيرًا',
+    catWrong: 'مشروب خاطئ',
+    catQuality: 'مشكلة في الجودة',
+    catMissing: 'لم يصل',
+    pickCat: 'اختر المشكلة من فضلك.',
+    closedTitle: 'تَقْهوَّ مغلق حاليًا',
+    closedHours: (s, e) => `ساعات الخدمة: ${s} – ${e}. نراك قريبًا!`,
+    pausedTitle: 'الخدمة متوقفة مؤقتًا',
+    pausedDefault: 'الكافيه في استراحة قصيرة. حاول مرة أخرى بعد قليل.',
+    sugar: 'سكر', mint: 'نعناع', temperature: 'الحرارة',
+    choices: { 'None': 'بدون', 'Less': 'قليل', 'Regular': 'عادي', 'Extra': 'زيادة',
+      'No mint': 'بدون نعناع', 'With mint': 'مع نعناع', 'Cold': 'بارد', 'Room temperature': 'درجة حرارة الغرفة' }
+  }
+};
+
+let lang = localStorage.getItem('cafe-lang') || 'en';
+const t = key => I18N[lang][key];
+const tChoice = c => I18N[lang].choices[c] || c;
+const tGroup = g => {
+  const key = g.toLowerCase();
+  return I18N[lang][key] || g;
+};
+const itemName = it => (lang === 'ar' && it.name_ar) ? it.name_ar : it.name;
+const catName = c => (lang === 'ar' && c.name_ar) ? c.name_ar : c.name;
+
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.getElementById('langBtn').textContent = lang === 'ar' ? 'EN' : 'عربي';
+  document.getElementById('backArrow').textContent = lang === 'ar' ? '→' : '←';
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if (typeof v === 'string') el.textContent = v;
+  });
+  document.getElementById('note').placeholder = t('notePh');
+  if (menu) { renderTabs(); renderGrid(); renderRepeat(); }
+  if (current) { document.getElementById('detailTitle').textContent = itemName(current); renderOptionGroups(); updateSendBtn(); }
+  if (document.getElementById('escView').style.display === 'block') {
+    document.getElementById('escBackArrow').textContent = lang === 'ar' ? '→' : '←';
+    document.getElementById('escMsg').placeholder = t('tellMorePh');
+    renderEscCats(); updateEscBtn();
+  }
+}
+
+function toggleLang(){
+  lang = lang === 'ar' ? 'en' : 'ar';
+  localStorage.setItem('cafe-lang', lang);
+  applyLang();
+}
+
+/* ============ state ============ */
+/* ============ drink icons (SVG, brand colours) ============ */
+const P='#003C32', T='#014A44', A='#D1C1B0', M='#668A84', G='#7FB6C9';
+const ICONS = {
+  coffee:`<svg viewBox="0 0 64 64"><path d="M14 24h30v14a10 10 0 0 1-10 10H24a10 10 0 0 1-10-10z" fill="${P}"/><path d="M44 27h5a8 8 0 0 1 0 16h-5v-5h4a3 3 0 0 0 0-6h-4z" fill="${P}"/><rect x="10" y="50" width="38" height="4" rx="2" fill="${T}"/><path d="M24 10c3 4 0 8 0 12M32 8c3 5 0 9 0 13" stroke="${M}" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
+  saudi:`<svg viewBox="0 0 64 64"><path d="M20 30h20l-2 3h-16z" fill="${T}"/><path d="M18 22c0-2 2-3 4-3h16c2 0 4 1 4 3l-2 10a8 8 0 0 1-8 7h-4a8 8 0 0 1-8-7z" fill="${P}"/><path d="M42 24c4-1 8 1 8 5s-4 7-9 6" fill="none" stroke="${P}" stroke-width="3" stroke-linecap="round"/><rect x="24" y="42" width="16" height="3" rx="1.5" fill="${T}"/><path d="M30 10c2 3 0 6 0 8" stroke="${A}" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
+  espresso:`<svg viewBox="0 0 64 64"><path d="M20 28h20v10a9 9 0 0 1-9 9h-2a9 9 0 0 1-9-9z" fill="${P}"/><path d="M40 30h4a6 6 0 0 1 0 12h-4v-4h3a2 2 0 0 0 0-4h-3z" fill="${P}"/><rect x="16" y="49" width="28" height="4" rx="2" fill="${T}"/><path d="M28 16c2 3 0 5 0 8M34 16c2 3 0 5 0 8" stroke="${M}" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`,
+  cappuccino:`<svg viewBox="0 0 64 64"><ellipse cx="30" cy="26" rx="16" ry="5" fill="${A}"/><path d="M14 26h32v12a10 10 0 0 1-10 10H24a10 10 0 0 1-10-10z" fill="${P}"/><path d="M46 29h4a7 7 0 0 1 0 14h-4v-5h3a2.5 2.5 0 0 0 0-5h-3z" fill="${P}"/><circle cx="24" cy="24" r="2.5" fill="${P}"/><circle cx="32" cy="23" r="2" fill="${P}"/><rect x="10" y="50" width="40" height="4" rx="2" fill="${T}"/></svg>`,
+  latte:`<svg viewBox="0 0 64 64"><path d="M22 8h20l-2 48a3 3 0 0 1-3 3h-10a3 3 0 0 1-3-3z" fill="none" stroke="${P}" stroke-width="3"/><path d="M23 30h18l-1.3 22H24.3z" fill="${A}"/><path d="M24.3 52h15.4l-1 14a2 2 0 0 1-2 2h-9.4a2 2 0 0 1-2-2z" fill="${P}"/><path d="M23.5 38h17" stroke="${P}" stroke-width="2" opacity=".4"/></svg>`,
+  milk:`<svg viewBox="0 0 64 64"><path d="M24 10h16v6l3 6-1.5 30a3 3 0 0 1-3 3H25.5a3 3 0 0 1-3-3L21 22l3-6z" fill="none" stroke="${P}" stroke-width="3"/><path d="M22.2 30h19.6l-1.2 22a2 2 0 0 1-2 2H25.4a2 2 0 0 1-2-2z" fill="#F8F4F1" stroke="${P}" stroke-width="0"/><rect x="24" y="10" width="16" height="5" fill="${A}"/></svg>`,
+  'tea-black':`<svg viewBox="0 0 64 64"><path d="M14 28h30v10a11 11 0 0 1-11 11H25a11 11 0 0 1-11-11z" fill="${P}"/><path d="M44 30h4a7 7 0 0 1 0 14h-4v-5h3a2.5 2.5 0 0 0 0-5h-4z" fill="${P}"/><ellipse cx="29" cy="28" rx="15" ry="4" fill="#7a3b26"/><rect x="10" y="51" width="38" height="4" rx="2" fill="${T}"/><rect x="30" y="12" width="3" height="12" rx="1.5" fill="${M}"/><rect x="30" y="10" width="9" height="5" rx="1" fill="${A}"/></svg>`,
+  'tea-green':`<svg viewBox="0 0 64 64"><path d="M14 28h30v10a11 11 0 0 1-11 11H25a11 11 0 0 1-11-11z" fill="${P}"/><path d="M44 30h4a7 7 0 0 1 0 14h-4v-5h3a2.5 2.5 0 0 0 0-5h-4z" fill="${P}"/><ellipse cx="29" cy="28" rx="15" ry="4" fill="#5f8f4e"/><rect x="10" y="51" width="38" height="4" rx="2" fill="${T}"/><path d="M29 12c5 3 1 9-1 11-2-2-6-8-1-11z" fill="#3f7d38"/></svg>`,
+  'tea-mint':`<svg viewBox="0 0 64 64"><path d="M14 28h30v10a11 11 0 0 1-11 11H25a11 11 0 0 1-11-11z" fill="${P}"/><path d="M44 30h4a7 7 0 0 1 0 14h-4v-5h3a2.5 2.5 0 0 0 0-5h-4z" fill="${P}"/><ellipse cx="29" cy="28" rx="15" ry="4" fill="#6fae5e"/><rect x="10" y="51" width="38" height="4" rx="2" fill="${T}"/><path d="M26 12c4 1 5 6 2 9-3-1-5-6-2-9zM33 14c3 2 2 7-1 8-2-3-2-7 1-8z" fill="#3f9d4a"/></svg>`,
+  water:`<svg viewBox="0 0 64 64"><path d="M24 14h16l-2 40a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3z" fill="none" stroke="${P}" stroke-width="3"/><path d="M25.6 32h12.8l-1.4 21a2 2 0 0 1-2 2h-6a2 2 0 0 1-2-2z" fill="${G}"/><path d="M26 30c3 2 6-2 9 0" stroke="${M}" stroke-width="2" fill="none"/></svg>`
+};
+const iconFor = it => ICONS[it.icon] || ICONS.coffee;
+
+// Desk comes from the scanned token (?t=). We keep the raw param to send back
+// to the server; the desk name is resolved server-side and shown once known.
+const deskToken = new URLSearchParams(location.search).get('t') || '';
+const deskParam = new URLSearchParams(location.search).get('desk') || '';  // fallback for manual testing
+let desk = '—';          // resolved desk id (display)
+let deskIsRoom = false;
+let deskMaxQty = 5;
+// query string to identify this desk in API calls
+const deskQS = deskToken ? ('t=' + encodeURIComponent(deskToken)) : (deskParam ? ('desk=' + encodeURIComponent(deskParam)) : '');
+function deskBody() { return deskToken ? { t: deskToken } : { desk: deskParam }; }
+
+let menu = null;
+let activeCat = null;
+let current = null;
+let picked = {};
+let qty = 1;
+let trackTimer = null;
+let trackedOrderId = null;
+
+const gridEl = document.getElementById('grid');
+const tabsEl = document.getElementById('tabs');
+const sendBtn = document.getElementById('sendBtn');
+const errorEl = document.getElementById('errorMsg');
+
+/* ============ boot: resolve desk, status, then menu ============ */
+async function boot(){
+  applyLang();
+
+  // Resolve the scanned desk
+  if (!deskQS) { return showBadDesk(); }
+  try {
+    const info = await fetch('/api/desk?' + deskQS).then(r => r.ok ? r.json() : Promise.reject(r.status));
+    desk = info.id; deskIsRoom = info.isRoom; deskMaxQty = info.maxQty || 5;
+    document.getElementById('deskLabel').textContent = desk;
+    document.getElementById('deskChip').textContent = desk;
+    if (deskIsRoom) document.getElementById('callPantryWrap').style.display = 'block';
+  } catch (e) {
+    return showBadDesk();
+  }
+
+  try {
+    const st = await fetch('/api/status').then(r => r.json());
+    if (!st.open) return showClosed(st);
+    const strip = document.getElementById('waitStrip');
+    strip.style.display = 'flex';
+    document.getElementById('waitText').textContent = t('waitOpen')(st.estWait);
+  } catch {}
+  const m = await fetch('/api/menu').then(r => r.json());
+  menu = m;
+  activeCat = m.categories[0]?.id;
+  renderTabs(); renderGrid(); renderRepeat();
+}
+boot();
+
+function showBadDesk(){
+  ['menuView','detailView','statusView','escView'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+  const cv = document.getElementById('closedView');
+  cv.style.display = 'block';
+  document.getElementById('closedTitle').textContent = t('badDeskTitle');
+  document.getElementById('closedText').textContent = t('badDeskText');
+}
+
+function showClosed(st){
+  ['menuView','detailView','statusView'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('closedView').style.display = 'block';
+  if (st.reason === 'paused') {
+    document.getElementById('closedTitle').textContent = t('pausedTitle');
+    document.getElementById('closedText').textContent = st.pauseMessage || t('pausedDefault');
+  } else {
+    document.getElementById('closedTitle').textContent = t('closedTitle');
+    document.getElementById('closedText').textContent = t('closedHours')(st.workingHours.start, st.workingHours.end);
+  }
+}
+
+/* ============ menu ============ */
+function renderTabs(){
+  tabsEl.innerHTML = '';
+  menu.categories.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'tab' + (c.id === activeCat ? ' active' : '');
+    b.textContent = catName(c);
+    b.onclick = () => { activeCat = c.id; renderTabs(); renderGrid(); };
+    tabsEl.appendChild(b);
+  });
+}
+
+function renderGrid(){
+  gridEl.innerHTML = '';
+  const cat = menu.categories.find(c => c.id === activeCat);
+  cat.items.forEach(it => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const primary = itemName(it);
+    const secondary = lang === 'ar' ? (it.name || '') : (it.name_ar || '');
+    card.innerHTML = `
+      <div class="icon-wrap">${iconFor(it)}</div>
+      <div class="label">${primary}</div>
+      ${secondary ? `<div class="label-en">${secondary}</div>` : ''}`;
+    card.onclick = () => openDetail(it);
+    gridEl.appendChild(card);
+  });
+}
+
+/* ============ favorites / repeat ============ */
+function getLast(){
+  try { return JSON.parse(localStorage.getItem('cafe-last-order')); } catch { return null; }
+}
+function renderRepeat(){
+  const last = getLast();
+  const wrap = document.getElementById('repeatWrap');
+  if (!last) { wrap.style.display = 'none'; return; }
+  const it = findItem(last.itemId);
+  if (!it) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  const opts = Object.values(last.picked || {}).map(tChoice).join(' · ');
+  document.getElementById('repeatText').textContent =
+    (last.qty > 1 ? last.qty + '× ' : '') + itemName(it) + (opts ? ' · ' + opts : '');
+}
+function findItem(id){
+  for (const c of menu.categories) {
+    const it = c.items.find(i => i.id === id);
+    if (it) return it;
+  }
+  return null;
+}
+function repeatLast(){
+  const last = getLast();
+  const it = last && findItem(last.itemId);
+  if (!it) return;
+  openDetail(it);
+  // restore previous choices where still valid
+  it.optionGroups.forEach(g => {
+    if (last.picked && g.choices.includes(last.picked[g.name])) picked[g.name] = last.picked[g.name];
+  });
+  qty = Math.min(last.qty || 1, it.maxQty || 5);
+  renderOptionGroups(); updateQty(); updateSendBtn();
+}
+
+/* ============ detail ============ */
+function openDetail(item){
+  current = item;
+  picked = {};
+  qty = 1;
+  item.optionGroups.forEach(g => { picked[g.name] = g.choices[0]; });
+
+  document.getElementById('detailTitle').textContent = itemName(item);
+  document.getElementById('detailPhoto').innerHTML = iconFor(item);
+
+  renderOptionGroups();
+  updateQty();
+  document.getElementById('note').value = '';
+  errorEl.style.display = 'none';
+  updateSendBtn();
+
+  document.getElementById('menuView').style.display = 'none';
+  document.getElementById('detailView').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function renderOptionGroups(){
+  const wrap = document.getElementById('optionGroups');
+  wrap.innerHTML = '';
+  current.optionGroups.forEach(g => {
+    const div = document.createElement('div');
+    div.className = 'opt-group';
+    div.innerHTML = `<div class="g-name">${tGroup(g.name)}</div>`;
+    const chips = document.createElement('div');
+    chips.className = 'chips';
+    g.choices.forEach(choice => {
+      const c = document.createElement('button');
+      c.className = 'chip' + (picked[g.name] === choice ? ' active' : '');
+      c.textContent = tChoice(choice);
+      c.onclick = () => { picked[g.name] = choice; renderOptionGroups(); updateSendBtn(); };
+      chips.appendChild(c);
+    });
+    div.appendChild(chips);
+    wrap.appendChild(div);
+  });
+}
+
+function changeQty(d){
+  qty = Math.max(1, Math.min(current.maxQty || 5, qty + d));
+  updateQty(); updateSendBtn();
+}
+function updateQty(){
+  document.getElementById('qtyVal').textContent = qty;
+  document.getElementById('qtyMinus').disabled = qty <= 1;
+  document.getElementById('qtyPlus').disabled = qty >= (current.maxQty || 5);
+}
+
+function optionSummaryEn(){
+  return Object.entries(picked).map(([g, v]) => g === 'Sugar' ? v + ' sugar' : v).join(' · ');
+}
+function optionSummaryLocal(){
+  return Object.values(picked).map(tChoice).join(' · ');
+}
+
+function updateSendBtn(){
+  const opts = optionSummaryLocal();
+  sendBtn.textContent = t('send') + ' — ' + (qty > 1 ? qty + '× ' : '') + itemName(current) + (opts ? ' · ' + opts : '');
+  sendBtn.disabled = false;
+}
+
+function showMenu(){
+  document.getElementById('detailView').style.display = 'none';
+  document.getElementById('menuView').style.display = 'block';
+}
+
+/* ============ send + track ============ */
+async function submitOrder(confirmDup){
+  sendBtn.disabled = true;
+  sendBtn.textContent = t('sending');
+  errorEl.style.display = 'none';
+  try {
+    const res = await fetch('/api/orders', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        ...deskBody(),
+        item: current.name,
+        itemId: current.id,
+        option: optionSummaryEn() || null,
+        note: document.getElementById('note').value.trim() || null,
+        qty,
+        confirmDup: !!confirmDup
+      })
+    });
+    const data = await res.json();
+    if (res.status === 423) { showClosed({ reason: data.reason, pauseMessage: data.pauseMessage, workingHours: data.workingHours || { start:'', end:'' } }); return; }
+    if (res.status === 409 && data.error === 'possible_duplicate') {
+      if (confirm(t('dupConfirm'))) return submitOrder(true);
+      updateSendBtn(); return;
+    }
+    if (res.status === 409 && data.error === 'out_of_stock') {
+      errorEl.textContent = t('outOfStock'); errorEl.style.display = 'block'; updateSendBtn(); return;
+    }
+    if (!res.ok) throw new Error(data.error || 'Something went wrong.');
+
+    localStorage.setItem('cafe-last-order', JSON.stringify({ itemId: current.id, picked, qty }));
+    trackedOrderId = data.id;
+    showStatus(data.position);
+    startTracking();
+  } catch (err) {
+    errorEl.textContent = err.message;
+    errorEl.style.display = 'block';
+    updateSendBtn();
+  }
+}
+sendBtn.onclick = () => submitOrder(false);
+
+function showStatus(position){
+  document.getElementById('detailView').style.display = 'none';
+  document.getElementById('statusView').style.display = 'block';
+  window.scrollTo(0, 0);
+
+  const icon = document.getElementById('statusIcon');
+  icon.textContent = '☕';
+  icon.classList.add('waiting');
+  document.getElementById('statusTitle').textContent = t('preparing');
+  document.getElementById('statusText').textContent =
+    t('preparingSub')((qty > 1 ? qty + '× ' : '') + itemName(current), desk);
+  const badge = document.getElementById('queueBadge');
+  badge.style.display = 'inline-block';
+  badge.textContent = t('ahead')(position || 1);
+  document.getElementById('fbWrap').style.display = 'none';
+}
+
+function startTracking(){
+  clearInterval(trackTimer);
+  trackTimer = setInterval(async () => {
+    try {
+      const o = await fetch('/api/orders/' + trackedOrderId).then(r => r.json());
+      if (o.status === 'done') {
+        clearInterval(trackTimer);
+        const icon = document.getElementById('statusIcon');
+        icon.textContent = '✓';
+        icon.classList.remove('waiting');
+        document.getElementById('statusTitle').textContent = t('delivered');
+        document.getElementById('statusText').textContent = t('deliveredSub');
+        document.getElementById('queueBadge').style.display = 'none';
+        const fb = document.getElementById('fbWrap');
+        fb.style.display = 'block';
+        document.getElementById('fbLabel').textContent = t('fbAsk');
+        document.getElementById('fbBtn').classList.remove('done');
+        document.getElementById('fbBtn').disabled = false;
+      } else if (o.position) {
+        document.getElementById('queueBadge').textContent = t('ahead')(o.position);
+      }
+    } catch {}
+  }, 5000);
+}
+
+async function sendFeedback(){
+  const btn = document.getElementById('fbBtn');
+  btn.disabled = true;
+  btn.classList.add('done');
+  document.getElementById('fbLabel').textContent = t('fbThanks');
+  try { await fetch('/api/orders/' + trackedOrderId + '/feedback', { method:'POST' }); } catch {}
+}
+
+function backToMenu(){
+  clearInterval(trackTimer);
+  ['statusView','escView','escSentView','detailView'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('menuView').style.display = 'block';
+  renderRepeat();
+}
+
+/* ============ call the pantry (rooms) ============ */
+function toggleCallSheet(){
+  document.getElementById('callSheet').classList.toggle('open');
+}
+function scrollToMenu(){
+  document.getElementById('callSheet').classList.remove('open');
+  document.getElementById('tabs').scrollIntoView({ behavior: 'smooth' });
+}
+async function sendCall(kind){
+  document.getElementById('callSheet').classList.remove('open');
+  try {
+    const res = await fetch('/api/calls', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...deskBody(), kind })
+    });
+    if (!res.ok) throw 0;
+    // reuse the escalation-sent view for a clean confirmation
+    document.getElementById('menuView').style.display = 'none';
+    document.getElementById('escSentView').style.display = 'block';
+    document.getElementById('escSentTitle').textContent = t('callSent');
+    document.getElementById('escSentText').textContent = t('callSentSub');
+    window.scrollTo(0, 0);
+  } catch {
+    alert('Could not reach the pantry. Please try again.');
+  }
+}
+
+/* ============ escalation ============ */
+const ESC_CATS = [
+  { id: 'late', key: 'catLate' },
+  { id: 'wrong', key: 'catWrong' },
+  { id: 'quality', key: 'catQuality' },
+  { id: 'missing', key: 'catMissing' }
+];
+let escOrderId = null;   // selected order id, or null for "general"
+let escCategory = null;
+
+async function openEscalation(){
+  document.getElementById('menuView').style.display = 'none';
+  document.getElementById('escView').style.display = 'block';
+  document.getElementById('escDeskChip').textContent = desk;
+  document.getElementById('escBackArrow').textContent = lang === 'ar' ? '→' : '←';
+  document.getElementById('escMsg').value = '';
+  document.getElementById('escMsg').placeholder = t('tellMorePh');
+  document.getElementById('escErr').style.display = 'none';
+  escOrderId = null; escCategory = null;
+  renderEscCats();
+  updateEscBtn();
+  window.scrollTo(0, 0);
+
+  // load recent orders for this desk to attach to
+  const wrap = document.getElementById('escOrders');
+  wrap.innerHTML = '';
+  let recent = [];
+  try { recent = await fetch('/api/orders/recent?' + deskQS).then(r => r.json()); } catch {}
+  recent.forEach((o, i) => {
+    const div = document.createElement('div');
+    div.className = 'esc-order-pick' + (i === 0 ? ' sel' : '');
+    if (i === 0) escOrderId = o.id;
+    const opts = o.option ? ' · ' + o.option : '';
+    const when = timeAgo(o.createdAt);
+    div.innerHTML = `${o.qty > 1 ? o.qty + '× ' : ''}${o.item}${opts}
+      <div class="sub">${when} · ${o.status === 'open' ? '⏳' : '✓'}</div>`;
+    div.onclick = () => { escOrderId = o.id; markEscPick(div); };
+    wrap.appendChild(div);
+  });
+  // "general problem" option
+  const gen = document.createElement('div');
+  gen.className = 'esc-order-pick none' + (recent.length ? '' : ' sel');
+  if (!recent.length) escOrderId = null;
+  gen.textContent = t('noRecent');
+  gen.onclick = () => { escOrderId = null; markEscPick(gen); };
+  wrap.appendChild(gen);
+}
+
+function timeAgo(iso){
+  const mins = Math.floor((Date.now() - new Date(iso)) / 60000);
+  if (mins < 1) return lang === 'ar' ? 'الآن' : 'just now';
+  if (lang === 'ar') return `قبل ${mins} دقيقة`;
+  return mins + ' min ago';
+}
+
+function markEscPick(el){
+  document.querySelectorAll('.esc-order-pick').forEach(x => x.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function renderEscCats(){
+  const wrap = document.getElementById('escCats');
+  wrap.innerHTML = '';
+  ESC_CATS.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'chip' + (escCategory === c.id ? ' active' : '');
+    b.textContent = t(c.key);
+    b.onclick = () => { escCategory = c.id; renderEscCats(); updateEscBtn(); };
+    wrap.appendChild(b);
+  });
+}
+
+function updateEscBtn(){
+  const btn = document.getElementById('escSendBtn');
+  btn.textContent = t('sendReport');
+  btn.disabled = !escCategory;
+  btn.style.opacity = escCategory ? '1' : '.5';
+}
+
+function closeEscalation(){
+  document.getElementById('escView').style.display = 'none';
+  document.getElementById('menuView').style.display = 'block';
+}
+
+async function sendEscalation(){
+  if (!escCategory) return;
+  const btn = document.getElementById('escSendBtn');
+  btn.disabled = true; btn.textContent = t('sendingReport');
+  const err = document.getElementById('escErr'); err.style.display = 'none';
+  try {
+    const res = await fetch('/api/escalations', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...deskBody(), orderId: escOrderId, category: escCategory, message: document.getElementById('escMsg').value.trim() || null })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Something went wrong.');
+    document.getElementById('escView').style.display = 'none';
+    document.getElementById('escSentView').style.display = 'block';
+    document.getElementById('escSentTitle').textContent = t('reportSent');
+    document.getElementById('escSentText').textContent = t('reportSentSub');
+    window.scrollTo(0, 0);
+  } catch (e) {
+    err.textContent = e.message; err.style.display = 'block';
+    updateEscBtn();
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,285 @@
+{
+  "categories": [
+    {
+      "id": "coffee",
+      "name": "Coffee",
+      "name_ar": "القهوة",
+      "items": [
+        {
+          "id": "black-coffee",
+          "name": "Black Coffee",
+          "name_ar": "قهوة سوداء",
+          "icon": "coffee",
+          "available": true,
+          "optionGroups": [
+            {
+              "name": "Sugar",
+              "choices": [
+                "None",
+                "Less",
+                "Regular",
+                "Extra"
+              ]
+            }
+          ],
+          "maxQty": 5
+        },
+        {
+          "id": "saudi-coffee",
+          "name": "Saudi Coffee",
+          "name_ar": "قهوة سعودية",
+          "icon": "saudi",
+          "available": true,
+          "optionGroups": [],
+          "maxQty": 5
+        },
+        {
+          "id": "turkish-coffee",
+          "name": "Turkish Coffee",
+          "name_ar": "قهوة تركية",
+          "icon": "coffee",
+          "available": true,
+          "optionGroups": [
+            {
+              "name": "Sugar",
+              "choices": [
+                "None",
+                "Less",
+                "Regular",
+                "Extra"
+              ]
+            }
+          ],
+          "maxQty": 5
+        },
+        {
+          "id": "americano",
+          "name": "Americano",
+          "name_ar": "أمريكانو",
+          "icon": "coffee",
+          "available": true,
+          "optionGroups": [
+            {
+              "name": "Sugar",
+              "choices": [
+                "None",
+                "Less",
+                "Regular",
+                "Extra"
+              ]
+            }
+          ],
+          "maxQty": 5
+        },
+        {
+          "id": "cappuccino",
+          "name": "Cappuccino",
+          "name_ar": "كابتشينو",
+          "icon": "cappuccino",
+          "available": true,
+          "optionGroups": [
+            {
+              "name": "Sugar",
+              "choices": [
+                "None",
+                "Less",
+                "Regular",
+                "Extra"
+              ]
+            }
+          ],
+          "maxQty": 5
+        },
+        {
+          "id": "latte-macchiato",
+          "name": "Latte Macchiato",
+          "name_ar": "لاتيه ماكياتو",
+          "icon": "latte",
+          "available": true,
+          "optionGroups": [
+            {
+              "name": "Sugar",
+              "choices": [
+                "None",
+                "Less",
+                "Regular",
+                "Extra"
+              ]
+            }
+          ],
+          "maxQty": 5
+        },
+        {
+          "id": "flat-white",
+          "name": "Flat White",
+          "name_ar": "فلات وايت",
+          "icon": "cappuccino",
+          "available": true,
+          "optionGroups": [
+            {
+              "name": "Sugar",
+              "choices": [
+                "None",
+                "Less",
+                "Regular",
+                "Extra"
+              ]
+            }
+          ],
+          "maxQty": 5
+        },
+        {
+          "id": "espresso",
+          "name": "Espresso",
+          "name_ar": "إسبريسو",
+          "icon": "espresso",
+          "available": true,
+          "optionGroups": [
+            {
+              "name": "Sugar",
+              "choices": [
+                "None",
+                "Less",
+                "Regular",
+                "Extra"
+              ]
+            }
+          ],
+          "maxQty": 5
+        }
+      ]
+    },
+    {
+      "id": "other-hot",
+      "name": "Hot Drinks",
+      "name_ar": "مشروبات ساخنة",
+      "items": [
+        {
+          "id": "hot-milk",
+          "name": "Hot Milk",
+          "name_ar": "حليب ساخن",
+          "icon": "milk",
+          "available": true,
+          "optionGroups": [
+            {
+              "name": "Sugar",
+              "choices": [
+                "None",
+                "Less",
+                "Regular",
+                "Extra"
+              ]
+            }
+          ],
+          "maxQty": 5
+        }
+      ]
+    },
+    {
+      "id": "tea",
+      "name": "Tea",
+      "name_ar": "الشاي",
+      "items": [
+        {
+          "id": "lipton-black",
+          "name": "Lipton Black Tea",
+          "name_ar": "شاي ليبتون أحمر",
+          "icon": "tea-black",
+          "available": true,
+          "optionGroups": [
+            {
+              "name": "Sugar",
+              "choices": [
+                "None",
+                "Less",
+                "Regular",
+                "Extra"
+              ]
+            },
+            {
+              "name": "Mint",
+              "choices": [
+                "No mint",
+                "With mint"
+              ]
+            }
+          ],
+          "maxQty": 5
+        },
+        {
+          "id": "rabea-green",
+          "name": "Rabea Green Tea",
+          "name_ar": "شاي ربيع أخضر",
+          "icon": "tea-green",
+          "available": true,
+          "optionGroups": [
+            {
+              "name": "Sugar",
+              "choices": [
+                "None",
+                "Less",
+                "Regular",
+                "Extra"
+              ]
+            }
+          ],
+          "maxQty": 5
+        },
+        {
+          "id": "rabea-express",
+          "name": "Rabea Express Tea",
+          "name_ar": "شاي ربيع إكسبرس",
+          "icon": "tea-black",
+          "available": true,
+          "optionGroups": [
+            {
+              "name": "Sugar",
+              "choices": [
+                "None",
+                "Less",
+                "Regular",
+                "Extra"
+              ]
+            }
+          ],
+          "maxQty": 5
+        },
+        {
+          "id": "mint-tea",
+          "name": "Mint Tea",
+          "name_ar": "شاي نعناع",
+          "icon": "tea-mint",
+          "available": true,
+          "optionGroups": [
+            {
+              "name": "Sugar",
+              "choices": [
+                "None",
+                "Less",
+                "Regular",
+                "Extra"
+              ]
+            }
+          ],
+          "maxQty": 5
+        }
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "name_ar": "الماء",
+      "items": [
+        {
+          "id": "cold-water",
+          "name": "Cold Water",
+          "name_ar": "ماء بارد",
+          "icon": "water",
+          "available": true,
+          "optionGroups": [],
+          "maxQty": 5
+        }
+      ]
+    }
+  ]
+}
