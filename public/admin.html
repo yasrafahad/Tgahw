@@ -171,6 +171,10 @@
   .range-tabs{display:flex;gap:6px;flex-wrap:wrap}
   .range-tab{border:1.5px solid var(--pale);background:#fff;color:var(--dark-teal);border-radius:16px;padding:6px 14px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit}
   .range-tab.active{background:var(--primary);border-color:var(--primary);color:#fff}
+  .dash-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+  .dash-controls label{font-size:.85rem;color:var(--gray);font-weight:600}
+  .dash-controls select{border:1.5px solid var(--pale);border-radius:8px;padding:7px 12px;background:#fff;color:var(--primary);font-family:inherit;font-size:.85rem;margin-inline-start:6px}
+  .dash-export{padding:8px 16px;font-size:.82rem}
   .kpi-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
   .kpi{background:var(--primary);color:var(--off-white);border-radius:12px;padding:12px 18px;min-width:120px;flex:1}
   .kpi small{color:var(--pale);font-size:.65rem;letter-spacing:1px;text-transform:uppercase;display:block}
@@ -238,6 +242,14 @@
         <button class="range-tab" data-range="month">This month</button>
         <button class="range-tab" data-range="year">This year</button>
       </div>
+    </div>
+    <div class="dash-controls">
+      <label>Floor:
+        <select id="dashFloor" onchange="loadDashboard()">
+          <option value="all">All floors</option>
+        </select>
+      </label>
+      <button class="save-btn dash-export" onclick="downloadStats()">⬇ Download statistics (CSV)</button>
     </div>
     <div class="kpi-row" id="kpiRow"></div>
     <div class="dash-grid">
@@ -429,7 +441,16 @@ function wireRangeTabs(){
 }
 
 async function loadDashboard(){
-  const d = await fetch('/api/admin/dashboard?range=' + dashRange, { headers: H() }).then(r => r.json());
+  const floor = document.getElementById('dashFloor').value;
+  const d = await fetch('/api/admin/dashboard?range=' + dashRange + '&floor=' + encodeURIComponent(floor), { headers: H() }).then(r => r.json());
+
+  // populate the floor dropdown once, from the byFloor data on the "all" view
+  const sel = document.getElementById('dashFloor');
+  if (sel.options.length <= 1 && d.byFloor && d.byFloor.length) {
+    d.byFloor.map(x => x.floor).sort().forEach(f => {
+      const o = document.createElement('option'); o.value = f; o.textContent = 'Floor ' + f; sel.appendChild(o);
+    });
+  }
 
   // KPIs
   const sat = d.totals.total ? Math.round((d.totals.thumbsUp / Math.max(1, d.totals.done)) * 100) : 0;
@@ -447,6 +468,20 @@ async function loadDashboard(){
   renderBars('chartFloor', d.byFloor.map(x => ['Floor ' + x.floor, x.n]), true);
   renderBars('chartDesk', d.byDesk.map(x => [x.desk, x.n]), false);
   renderHours('chartHour', d.byHour);
+}
+
+async function downloadStats(){
+  const floor = document.getElementById('dashFloor').value;
+  try {
+    const res = await fetch('/api/admin/dashboard/export?range=' + dashRange + '&floor=' + encodeURIComponent(floor), { headers: H() });
+    if (!res.ok) { alert('Could not export statistics.'); return; }
+    const blob = await res.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'tgahw-stats-' + floor + '-' + dashRange + '-' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  } catch (e) { alert('Export failed: ' + e.message); }
 }
 
 function renderBars(elId, data, accentTop){

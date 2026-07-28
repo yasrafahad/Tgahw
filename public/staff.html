@@ -126,7 +126,6 @@
       <option value="all">All floors</option>
     </select>
     <button class="hbtn" id="soundBtn" onclick="toggleSound()" title="Sound alert">🔔 Sound: on</button>
-    <button class="hbtn" onclick="openStock()">📦 Stock</button>
     <button class="pause-btn" id="pauseBtn" onclick="togglePause()">⏸ Pause orders</button>
   </div>
 </header>
@@ -190,7 +189,7 @@ async function refresh(){
   try {
     const [open, stats, status, calls] = await Promise.all([
       fetch('/api/orders/queue/open?floor=' + encodeURIComponent(currentFloor)).then(r => r.json()),
-      fetch('/api/orders/stats/today').then(r => r.json()),
+      fetch('/api/orders/stats/today?floor=' + encodeURIComponent(currentFloor)).then(r => r.json()),
       fetch('/api/status').then(r => r.json()),
       fetch('/api/calls/open?floor=' + encodeURIComponent(currentFloor)).then(r => r.json())
     ]);
