@@ -149,6 +149,9 @@
   .desk-row .dtoggle{border:none;background:var(--ice);border-radius:8px;padding:6px 12px;font-size:.75rem;font-weight:700;color:var(--dark-teal);cursor:pointer;font-family:inherit}
   .desk-row.inactive .dtoggle{background:var(--dark-teal);color:#fff}
   .desk-row .dqr{border:1.5px solid var(--primary);background:transparent;border-radius:8px;padding:6px 12px;font-size:.75rem;font-weight:700;color:var(--primary);cursor:pointer;font-family:inherit}
+  .desk-row .dcall{border:1.5px solid var(--muted-teal);background:transparent;border-radius:8px;padding:6px 12px;font-size:.75rem;font-weight:700;color:var(--muted-teal);cursor:pointer;font-family:inherit;white-space:nowrap}
+  .desk-row .dcall.on{background:var(--primary);border-color:var(--primary);color:#fff}
+  .desk-row .dcall.always{border-style:dashed;cursor:default;opacity:.8}
 
   /* QR modal */
   .qr-overlay{display:none;position:fixed;inset:0;background:rgba(0,60,50,.55);z-index:50;align-items:center;justify-content:center;padding:20px}
@@ -581,13 +584,21 @@ function renderDesks(){
     const row = document.createElement('div');
     row.className = 'desk-row' + (d.active === false ? ' inactive' : '');
     const isRoom = d.type === 'room';
+    // rooms always have the call button; desks can be flagged by the admin
+    const callState = isRoom ? 'always' : (d.allowCall ? 'on' : 'off');
+    const callBtn = isRoom
+      ? `<span class="dcall always" title="Meeting rooms always have this">📞 Call: always</span>`
+      : `<button class="dcall ${d.allowCall ? 'on' : ''}">📞 Call: ${d.allowCall ? 'on' : 'off'}</button>`;
     row.innerHTML = `
       <span class="did">${d.id}</span>
       <span class="dtype ${isRoom ? 'room' : ''}">${isRoom ? 'ROOM · max ' + (d.maxQty || 15) : 'DESK'}</span>
+      ${callBtn}
       <button class="dqr">QR code</button>
       <button class="dtoggle">${d.active === false ? 'Enable' : 'Disable'}</button>`;
     row.querySelector('.dqr').onclick = () => showQr(d.id);
     row.querySelector('.dtoggle').onclick = () => toggleDesk(d.id);
+    const cb = row.querySelector('button.dcall');
+    if (cb) cb.onclick = () => toggleCall(d.id);
     scroll.appendChild(row);
   });
   list.innerHTML = '';
@@ -614,6 +625,11 @@ async function addDesk(){
 
 async function toggleDesk(id){
   await fetch('/api/admin/desks/' + encodeURIComponent(id) + '/toggle', { method: 'POST', headers: H() });
+  await loadDesks();
+}
+
+async function toggleCall(id){
+  await fetch('/api/admin/desks/' + encodeURIComponent(id) + '/call-toggle', { method: 'POST', headers: H() });
   await loadDesks();
 }
 

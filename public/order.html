@@ -194,6 +194,8 @@
     color:var(--primary);border-radius:999px;padding:12px 28px;
     font-weight:700;font-size:.95rem;cursor:pointer;font-family:inherit;
   }
+  .again-btn.primary-again{background:var(--primary);color:var(--off-white);border-color:var(--primary)}
+  .another-hint{margin:12px 24px 0;font-size:.82rem;color:var(--muted-teal);line-height:1.45}
 
   /* ===== CLOSED VIEW ===== */
   #closedView{display:none;text-align:center;padding:90px 30px}
@@ -222,6 +224,29 @@
   /* escalation footer link */
   .esc-footer{margin:14px 16px 22px;border-top:1px solid var(--pale);padding-top:12px;text-align:center;font-size:.85rem;color:var(--muted-teal)}
   .esc-footer a{color:var(--dark-teal);font-weight:700;text-decoration:underline;cursor:pointer;margin-inline-start:6px}
+
+  /* cart */
+  .cart-bar{position:fixed;left:16px;right:16px;bottom:16px;max-width:640px;margin:0 auto;background:var(--primary);color:var(--off-white);border-radius:16px;padding:15px 20px;display:flex;align-items:center;gap:12px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(0,60,50,.3);z-index:20}
+  .cart-count{background:var(--gold);color:var(--primary);border-radius:999px;min-width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:.85rem;padding:0 6px}
+  .cart-arrow{margin-inline-start:auto;font-size:1.3rem}
+  #cartView{display:none;padding-bottom:120px}
+  .cart-item{display:flex;align-items:center;gap:12px;background:var(--off-white);border:1px solid var(--pale);border-radius:14px;padding:12px 14px;margin:10px 16px 0}
+  .cart-item .ci-ic{width:44px;height:44px;border-radius:10px;background:var(--ice);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .cart-item .ci-ic svg{width:28px;height:28px}
+  .cart-item .ci-body{flex:1}
+  .cart-item .ci-name{font-weight:700;font-size:.95rem;color:var(--primary)}
+  .cart-item .ci-opt{font-size:.78rem;color:var(--muted-teal);margin-top:2px}
+  .cart-item .ci-qty{background:var(--primary);color:#fff;border-radius:7px;padding:2px 9px;font-size:.8rem;font-weight:700}
+  .cart-item .ci-del{border:none;background:none;color:#b3402f;font-size:1.2rem;cursor:pointer;padding:4px}
+  .send-btn.ghost{background:var(--ice);color:var(--dark-teal)}
+  .detail-actions{display:flex;gap:10px}
+  .detail-actions .send-btn{flex:1}
+
+  /* favorite star on menu cards */
+  .card{position:relative}
+  .fav-star{position:absolute;top:8px;inline-size:auto;font-size:1rem;color:var(--gold);z-index:2}
+  html[dir="ltr"] .fav-star{right:10px}
+  html[dir="rtl"] .fav-star{left:10px}
 
   /* escalation views */
   #escView{display:none;padding-bottom:100px}
@@ -253,7 +278,7 @@
     <span class="dot"></span><span id="waitText"></span>
   </div>
   <div class="call-pantry-wrap" id="callPantryWrap" style="display:none">
-    <button class="call-pantry-btn" onclick="toggleCallSheet()">
+    <button class="call-pantry-btn" onclick="onCallPantry()">
       <span class="cp-icon">🔔</span>
       <span data-i18n="callPantry">Call the pantry</span>
     </button>
@@ -280,6 +305,26 @@
   <div class="esc-footer">
     <span data-i18n="problemQ">Problem with an order?</span>
     <a onclick="openEscalation()" data-i18n="reportIt">Report it</a>
+  </div>
+  <div class="cart-bar" id="cartBar" onclick="openCart()" style="display:none">
+    <span class="cart-count" id="cartCount">0</span>
+    <span data-i18n="viewCart">View cart</span>
+    <span class="cart-arrow">›</span>
+  </div>
+</div>
+
+<!-- CART -->
+<div id="cartView">
+  <div class="detail-bar">
+    <button class="back-btn" onclick="showMenu()" aria-label="Back" id="cartBackArrow">←</button>
+    <span class="title" data-i18n="yourCart">Your cart</span>
+    <span class="desk-chip" id="cartDeskChip"></span>
+  </div>
+  <div id="cartItems"></div>
+  <div class="error-msg" id="cartErr"></div>
+  <div class="send-bar">
+    <button class="send-btn ghost" onclick="showMenu()" data-i18n="addMore">+ Add more</button>
+    <button class="send-btn" id="cartSendBtn" onclick="sendCart()"></button>
   </div>
 </div>
 
@@ -340,7 +385,8 @@
     <textarea id="note" maxlength="120"></textarea>
   </div>
   <div class="error-msg" id="errorMsg"></div>
-  <div class="send-bar">
+  <div class="send-bar detail-actions">
+    <button class="send-btn ghost" id="addCartBtn" onclick="addToCart()"></button>
     <button class="send-btn" id="sendBtn"></button>
   </div>
 </div>
@@ -356,7 +402,8 @@
     <div class="fb-label" id="fbLabel"></div>
   </div>
   <br>
-  <button class="again-btn" onclick="backToMenu()" data-i18n="orderAgain">Order something else</button>
+  <button class="again-btn primary-again" onclick="backToMenu()" data-i18n="orderAnother">+ Order another drink</button>
+  <p class="another-hint" data-i18n="anotherHint">Ordering for a guest? Add any other drink — it comes to the same desk.</p>
 </div>
 
 <!-- CLOSED / PAUSED -->
@@ -380,6 +427,15 @@ const I18N = {
     send: 'Send order',
     sending: 'Sending…',
     orderAgain: 'Order something else',
+    orderAnother: '+ Order another drink',
+    addToCart: '+ Add to cart',
+    viewCart: 'View cart',
+    yourCart: 'Your cart',
+    addMore: '+ Add more',
+    sendCart: 'Send order',
+    cartSentTitle: (n) => n > 1 ? `${n} drinks on the way!` : 'Your order is on the way!',
+    cartSentSub: 'The pantry has your order. It will arrive at your desk shortly.',
+    anotherHint: 'Ordering for a guest? Add any other drink — it comes to the same desk.',
     preparing: 'Order received',
     preparingSub: (item, desk) => `${item} is being prepared for desk ${desk}.`,
     ahead: n => n <= 1 ? "You're next in line" : `${n - 1} order${n - 1 > 1 ? 's' : ''} ahead of you`,
@@ -436,6 +492,15 @@ const I18N = {
     send: 'إرسال الطلب',
     sending: 'جاري الإرسال…',
     orderAgain: 'اطلب شيئًا آخر',
+    orderAnother: '+ اطلب مشروبًا آخر',
+    addToCart: '+ أضف إلى السلة',
+    viewCart: 'عرض السلة',
+    yourCart: 'سلتك',
+    addMore: '+ أضف المزيد',
+    sendCart: 'إرسال الطلب',
+    cartSentTitle: (n) => n > 1 ? `${n} مشروبات في الطريق!` : 'طلبك في الطريق!',
+    cartSentSub: 'وصل طلبك إلى البانتري. سيصلك إلى مكتبك قريبًا.',
+    anotherHint: 'تطلب لضيف عندك؟ أضف أي مشروب آخر — يوصل لنفس المكتب.',
     preparing: 'تم استلام الطلب',
     preparingSub: (item, desk) => `${item} قيد التحضير لمكتب ${desk}.`,
     ahead: n => n <= 1 ? 'أنت التالي في الطابور' : `أمامك ${n - 1} ${n - 1 > 2 ? 'طلبات' : 'طلب'}`,
@@ -570,7 +635,7 @@ async function boot(){
     desk = info.id; deskIsRoom = info.isRoom; deskMaxQty = info.maxQty || 5;
     document.getElementById('deskLabel').textContent = desk;
     document.getElementById('deskChip').textContent = desk;
-    if (deskIsRoom) document.getElementById('callPantryWrap').style.display = 'block';
+    if (info.canCall) document.getElementById('callPantryWrap').style.display = 'block';
   } catch (e) {
     return showBadDesk();
   }
@@ -585,7 +650,9 @@ async function boot(){
   const m = await fetch('/api/menu').then(r => r.json());
   menu = m;
   activeCat = m.categories[0]?.id;
-  renderTabs(); renderGrid(); renderRepeat();
+  renderTabs(); renderGrid();
+  loadDeskLastOrder();
+  loadDeskFavorite();
 }
 boot();
 
@@ -624,12 +691,19 @@ function renderTabs(){
 function renderGrid(){
   gridEl.innerHTML = '';
   const cat = menu.categories.find(c => c.id === activeCat);
-  cat.items.forEach(it => {
+  // put the desk's favorite drink first within its category
+  const items = [...cat.items];
+  if (deskFavId) {
+    items.sort((a, b) => (b.id === deskFavId ? 1 : 0) - (a.id === deskFavId ? 1 : 0));
+  }
+  items.forEach(it => {
     const card = document.createElement('div');
     card.className = 'card';
     const primary = itemName(it);
     const secondary = lang === 'ar' ? (it.name || '') : (it.name_ar || '');
+    const isFav = it.id === deskFavId;
     card.innerHTML = `
+      ${isFav ? '<span class="fav-star">★</span>' : ''}
       <div class="icon-wrap">${iconFor(it)}</div>
       <div class="label">${primary}</div>
       ${secondary ? `<div class="label-en">${secondary}</div>` : ''}`;
@@ -639,19 +713,47 @@ function renderGrid(){
 }
 
 /* ============ favorites / repeat ============ */
-function getLast(){
-  try { return JSON.parse(localStorage.getItem('cafe-last-order')); } catch { return null; }
+// The desk's own last order (fetched from the server), used by "order my usual"
+let deskLastOrder = null;
+let deskFavId = null;  // the desk's most-ordered drink id
+
+async function loadDeskFavorite(){
+  try {
+    const fav = await fetch('/api/orders/favorite?' + deskQS).then(r => r.json());
+    if (fav && fav.item) {
+      const it = findItemByName(fav.item);
+      deskFavId = it ? it.id : null;
+    }
+  } catch { deskFavId = null; }
+  if (menu) renderGrid();
 }
+
+async function loadDeskLastOrder(){
+  try {
+    const recent = await fetch('/api/orders/recent?' + deskQS).then(r => r.json());
+    // most recent order for THIS desk (server returns newest first)
+    deskLastOrder = (recent && recent.length) ? recent[0] : null;
+  } catch { deskLastOrder = null; }
+  renderRepeat();
+}
+
 function renderRepeat(){
-  const last = getLast();
   const wrap = document.getElementById('repeatWrap');
-  if (!last) { wrap.style.display = 'none'; return; }
-  const it = findItem(last.itemId);
+  if (!deskLastOrder || !menu) { wrap.style.display = 'none'; return; }
+  // match the stored item name back to a current menu item
+  const it = findItemByName(deskLastOrder.item);
   if (!it) { wrap.style.display = 'none'; return; }
   wrap.style.display = 'block';
-  const opts = Object.values(last.picked || {}).map(tChoice).join(' · ');
+  const opts = deskLastOrder.option || '';
   document.getElementById('repeatText').textContent =
-    (last.qty > 1 ? last.qty + '× ' : '') + itemName(it) + (opts ? ' · ' + opts : '');
+    (deskLastOrder.qty > 1 ? deskLastOrder.qty + '× ' : '') + itemName(it) + (opts ? ' · ' + opts : '');
+}
+function findItemByName(name){
+  for (const c of menu.categories) {
+    const it = c.items.find(i => i.name === name || i.name_ar === name);
+    if (it) return it;
+  }
+  return null;
 }
 function findItem(id){
   for (const c of menu.categories) {
@@ -661,15 +763,10 @@ function findItem(id){
   return null;
 }
 function repeatLast(){
-  const last = getLast();
-  const it = last && findItem(last.itemId);
+  const it = deskLastOrder && findItemByName(deskLastOrder.item);
   if (!it) return;
   openDetail(it);
-  // restore previous choices where still valid
-  it.optionGroups.forEach(g => {
-    if (last.picked && g.choices.includes(last.picked[g.name])) picked[g.name] = last.picked[g.name];
-  });
-  qty = Math.min(last.qty || 1, it.maxQty || 5);
+  qty = Math.min(deskLastOrder.qty || 1, it.maxQty || 5);
   renderOptionGroups(); updateQty(); updateSendBtn();
 }
 
@@ -736,11 +833,100 @@ function updateSendBtn(){
   const opts = optionSummaryLocal();
   sendBtn.textContent = t('send') + ' — ' + (qty > 1 ? qty + '× ' : '') + itemName(current) + (opts ? ' · ' + opts : '');
   sendBtn.disabled = false;
+  document.getElementById('addCartBtn').textContent = t('addToCart');
 }
 
 function showMenu(){
-  document.getElementById('detailView').style.display = 'none';
+  ['detailView','cartView'].forEach(id => document.getElementById(id).style.display = 'none');
   document.getElementById('menuView').style.display = 'block';
+  renderCartBar();
+}
+
+/* ============ cart ============ */
+let cart = [];
+
+function addToCart(){
+  cart.push({
+    itemId: current.id,
+    name: current.name,
+    name_ar: current.name_ar,
+    icon: current.icon,
+    option: optionSummaryEn() || null,
+    optionLocal: optionSummaryLocal() || null,
+    note: document.getElementById('note').value.trim() || null,
+    qty
+  });
+  showMenu();
+}
+
+function renderCartBar(){
+  const bar = document.getElementById('cartBar');
+  if (!cart.length) { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  const totalQty = cart.reduce((s, c) => s + c.qty, 0);
+  document.getElementById('cartCount').textContent = totalQty;
+}
+
+function openCart(){
+  document.getElementById('menuView').style.display = 'none';
+  document.getElementById('cartView').style.display = 'block';
+  document.getElementById('cartDeskChip').textContent = desk;
+  document.getElementById('cartBackArrow').textContent = lang === 'ar' ? '→' : '←';
+  renderCartItems();
+  window.scrollTo(0, 0);
+}
+
+function renderCartItems(){
+  const wrap = document.getElementById('cartItems');
+  wrap.innerHTML = '';
+  cart.forEach((c, i) => {
+    const it = findItem(c.itemId) || {};
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = `
+      <div class="ci-ic">${iconFor(it)}</div>
+      <div class="ci-body">
+        <div class="ci-name">${(c.qty > 1 ? c.qty + '× ' : '') + (lang === 'ar' ? (c.name_ar || c.name) : c.name)}</div>
+        ${c.optionLocal ? `<div class="ci-opt">${c.optionLocal}</div>` : ''}
+        ${c.note ? `<div class="ci-opt">📝 ${c.note}</div>` : ''}
+      </div>
+      <button class="ci-del" aria-label="remove">✕</button>`;
+    div.querySelector('.ci-del').onclick = () => { cart.splice(i, 1); renderCartItems(); renderCartBar(); if (!cart.length) showMenu(); };
+    wrap.appendChild(div);
+  });
+  const totalQty = cart.reduce((s, c) => s + c.qty, 0);
+  document.getElementById('cartSendBtn').textContent = t('sendCart') + ' (' + totalQty + ')';
+}
+
+async function sendCart(){
+  if (!cart.length) return;
+  const btn = document.getElementById('cartSendBtn');
+  btn.disabled = true; btn.textContent = t('sending');
+  const err = document.getElementById('cartErr'); err.style.display = 'none';
+  let sent = 0;
+  try {
+    for (const c of cart) {
+      const res = await fetch('/api/orders', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...deskBody(), item: c.name, itemId: c.itemId, option: c.option, note: c.note, qty: c.qty, confirmDup: true })
+      });
+      if (res.ok) sent++;
+    }
+    // update this desk's usual to the last item sent
+    if (cart.length) { const last = cart[cart.length - 1]; deskLastOrder = { item: last.name, option: last.option, qty: last.qty }; }
+    cart = [];
+    renderCartBar();
+    // show a simple confirmation using the escalation-sent view style
+    document.getElementById('cartView').style.display = 'none';
+    document.getElementById('menuView').style.display = 'none';
+    document.getElementById('escSentView').style.display = 'block';
+    document.getElementById('escSentTitle').textContent = t('cartSentTitle')(sent);
+    document.getElementById('escSentText').textContent = t('cartSentSub');
+    window.scrollTo(0, 0);
+  } catch (e) {
+    err.textContent = 'Something went wrong. Please try again.'; err.style.display = 'block';
+    btn.disabled = false; renderCartItems();
+  }
 }
 
 /* ============ send + track ============ */
@@ -773,8 +959,9 @@ async function submitOrder(confirmDup){
     }
     if (!res.ok) throw new Error(data.error || 'Something went wrong.');
 
-    localStorage.setItem('cafe-last-order', JSON.stringify({ itemId: current.id, picked, qty }));
     trackedOrderId = data.id;
+    // update this desk's "usual" to the order just placed
+    deskLastOrder = { item: current.name, option: optionSummaryEn() || null, qty };
     showStatus(data.position);
     startTracking();
   } catch (err) {
@@ -843,6 +1030,15 @@ function backToMenu(){
 }
 
 /* ============ call the pantry (rooms) ============ */
+function onCallPantry(){
+  // Meeting rooms show the options sheet (clean the table / something else).
+  // Flagged desks send a direct call with no options.
+  if (deskIsRoom) {
+    toggleCallSheet();
+  } else {
+    sendCall('service');
+  }
+}
 function toggleCallSheet(){
   document.getElementById('callSheet').classList.toggle('open');
 }
