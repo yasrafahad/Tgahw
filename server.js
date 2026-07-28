@@ -69,7 +69,8 @@ function requireAdmin(req, res, next) {
   if (req.headers['x-admin-pin'] === ADMIN_PIN) return next();
   res.status(401).json({ error: 'Wrong PIN.' });
 }
-function openQueueSize() {
+function openQueueSize(floor) {
+  if (floor) return DB.get(`SELECT COUNT(*) n FROM orders WHERE status='open' AND floor=?`, [floor]).n;
   return DB.get(`SELECT COUNT(*) n FROM orders WHERE status='open'`).n;
 }
 function estimatedWaitMinutes() {
@@ -89,14 +90,17 @@ app.get('/api/desk', (req, res) => {
   const d = resolveDesk(req);
   if (!d) return res.status(404).json({ error: 'unknown_desk' });
   if (d.active === false) return res.status(423).json({ error: 'desk_inactive' });
-  res.json({ id: d.id, type: d.type || 'desk', isRoom: d.type === 'room', floor: deskFloor(d.id), maxQty: d.maxQty || 5 });
+  // The "call the pantry" button shows for meeting rooms, or any desk an admin flagged with allowCall
+  const canCall = d.type === 'room' || d.allowCall === true;
+  res.json({ id: d.id, type: d.type || 'desk', isRoom: d.type === 'room', canCall, floor: deskFloor(d.id), maxQty: d.maxQty || 5 });
 });
 
 // A meeting room requests the pantry. kind: service | refill | clear | other
 app.post('/api/calls', (req, res) => {
   const d = resolveDesk(req);
   if (!d) return res.status(400).json({ error: 'unknown_desk' });
-  if (d.type !== 'room') return res.status(403).json({ error: 'not_a_room' });
+  // allow meeting rooms, or any desk an admin flagged with allowCall
+  if (d.type !== 'room' && d.allowCall !== true) return res.status(403).json({ error: 'not_allowed' });
   const kind = String((req.body || {}).kind || 'service');
   if (!['service', 'refill', 'clear', 'other'].includes(kind)) return res.status(400).json({ error: 'bad_kind' });
   const message = req.body && req.body.message ? String(req.body.message).slice(0, 160) : null;
@@ -190,13 +194,18 @@ app.post('/api/orders', (req, res) => {
     return res.status(409).json({ error: 'possible_duplicate' });
   }
 
+  // Pending-order cap prevents spam but must allow a cart of drinks.
+  // Meeting rooms serve groups, so they get a higher cap than desks.
+  const isRoom = deskDef.type === 'room';
+  const pendingCap = isRoom ? 25 : 10;
   const openForDesk = DB.get(`SELECT COUNT(*) n FROM orders WHERE desk=? AND status='open'`, [desk]).n;
-  if (openForDesk >= 3) return res.status(429).json({ error: 'This desk already has 3 pending orders. Please wait for them to arrive.' });
+  if (openForDesk >= pendingCap) return res.status(429).json({ error: `This desk already has ${pendingCap} pending orders. Please wait for them to arrive.` });
 
-  const position = openQueueSize() + 1;
+  const deskFl = deskFloor(desk);
+  const position = openQueueSize(deskFl) + 1;
   const order = {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-    desk: String(desk), floor: deskFloor(desk),
+    desk: String(desk), floor: deskFl,
     item: String(item), option: option ? String(option) : null, note: note ? String(note) : null,
     qty: quantity, status: 'open', feedback: null,
     createdAt: new Date().toISOString(), doneAt: null
@@ -208,13 +217,30 @@ app.post('/api/orders', (req, res) => {
   res.status(201).json({ ...order, position, estWait: position * (loadSettings().avgPrepMinutes || 4) });
 });
 
+// Recent orders for the scanned desk — MUST be before /api/orders/:id
+// so Express doesn't treat "recent" as an order id.
+app.get('/api/orders/recent', (req, res) => {
+  const d = resolveDesk(req);
+  if (!d) return res.json([]);
+  const list = DB.rows(`SELECT id,item,option,qty,status,createdAt FROM orders WHERE desk=? ORDER BY createdAt DESC LIMIT 5`, [d.id]);
+  res.json(list);
+});
+
+// The desk's most-ordered drink (favorite) — also before /api/orders/:id
+app.get('/api/orders/favorite', (req, res) => {
+  const d = resolveDesk(req);
+  if (!d) return res.json(null);
+  const fav = DB.get(`SELECT item, SUM(qty) n FROM orders WHERE desk=? GROUP BY item ORDER BY n DESC LIMIT 1`, [d.id]);
+  res.json(fav || null);
+});
+
 // Track one order
 app.get('/api/orders/:id', (req, res) => {
   const order = DB.get(`SELECT * FROM orders WHERE id=?`, [req.params.id]);
   if (!order) return res.status(404).json({ error: 'Order not found.' });
   let position = null;
   if (order.status === 'open') {
-    position = DB.get(`SELECT COUNT(*) n FROM orders WHERE status='open' AND createdAt<=?`, [order.createdAt]).n;
+    position = DB.get(`SELECT COUNT(*) n FROM orders WHERE status='open' AND floor=? AND createdAt<=?`, [order.floor, order.createdAt]).n;
   }
   res.json({ ...order, position });
 });
@@ -227,13 +253,6 @@ app.post('/api/orders/:id/feedback', (req, res) => {
 });
 
 // Recent orders for the scanned desk (so the escalation form can attach to one)
-app.get('/api/orders/recent', (req, res) => {
-  const d = resolveDesk(req);
-  if (!d) return res.json([]);
-  const list = DB.rows(`SELECT id,item,option,qty,status,createdAt FROM orders WHERE desk=? ORDER BY createdAt DESC LIMIT 5`, [d.id]);
-  res.json(list);
-});
-
 // ---------- escalations ----------
 app.post('/api/escalations', (req, res) => {
   const { orderId, category, message } = req.body || {};
@@ -456,6 +475,16 @@ app.post('/api/admin/desks/:id/toggle', requireAdmin, (req, res) => {
   const d = desks.find(x => x.id === req.params.id);
   if (!d) return res.status(404).json({ error: 'Desk not found.' });
   d.active = !d.active;
+  saveDesks(desks);
+  res.json(d);
+});
+
+// Toggle whether a desk shows the "call the pantry" button (rooms always show it)
+app.post('/api/admin/desks/:id/call-toggle', requireAdmin, (req, res) => {
+  const desks = loadDesks();
+  const d = desks.find(x => x.id === req.params.id);
+  if (!d) return res.status(404).json({ error: 'Desk not found.' });
+  d.allowCall = !d.allowCall;
   saveDesks(desks);
   res.json(d);
 });
