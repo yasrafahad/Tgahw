@@ -2042,6 +2042,60 @@
       "maxQty": 6,
       "active": true,
       "token": "DFwabwO-ffHl"
+    },
+    {
+      "id": "7F-CEO-01",
+      "type": "desk",
+      "floor": "7F",
+      "zone": "CEO",
+      "maxQty": 5,
+      "active": true,
+      "token": "g2tV_5WhdFqK"
+    },
+    {
+      "id": "7F-CEO-02",
+      "type": "desk",
+      "floor": "7F",
+      "zone": "CEO",
+      "maxQty": 5,
+      "active": true,
+      "token": "7eo4E331oM-a"
+    },
+    {
+      "id": "7F-CEO-MeetingRoom-M",
+      "type": "room",
+      "floor": "7F",
+      "zone": "CEO",
+      "maxQty": 10,
+      "active": true,
+      "token": "Fx_csmwBYmA6"
+    },
+    {
+      "id": "7F-CHAIRMAN-01",
+      "type": "desk",
+      "floor": "7F",
+      "zone": "CHAIRMAN",
+      "maxQty": 5,
+      "active": true,
+      "token": "xBjquUDTkl54"
+    },
+    {
+      "id": "7F-CHAIRMAN-02",
+      "type": "desk",
+      "floor": "7F",
+      "zone": "CHAIRMAN",
+      "maxQty": 5,
+      "active": true,
+      "token": "Og7IvKAdnf3W"
+    },
+    {
+      "id": "7F-CHAIRMAN-BoardRoom-L",
+      "type": "room",
+      "floor": "7F",
+      "zone": "CHAIRMAN",
+      "maxQty": 15,
+      "active": true,
+      "token": "PIup1iUsdRWd"
     }
   ]
 }

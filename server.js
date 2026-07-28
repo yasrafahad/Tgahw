@@ -293,12 +293,16 @@ app.post('/api/orders/:id/undo', (req, res) => {
 
 app.get('/api/orders/stats/today', (req, res) => {
   const today = new Date().toISOString().slice(0, 10);
+  const floor = req.query.floor && req.query.floor !== 'all' ? String(req.query.floor) : null;
+  const where = floor ? `substr(createdAt,1,10)=? AND floor=?` : `substr(createdAt,1,10)=?`;
+  const args = floor ? [today, floor] : [today];
   const r = DB.get(`SELECT
       COUNT(*) total,
       SUM(CASE WHEN status='done' THEN 1 ELSE 0 END) done,
       SUM(CASE WHEN feedback='up' THEN 1 ELSE 0 END) thumbsUp
-    FROM orders WHERE substr(createdAt,1,10)=?`, [today]);
-  const openEsc = DB.get(`SELECT COUNT(*) n FROM escalations WHERE status='open'`).n;
+    FROM orders WHERE ${where}`, args);
+  const escWhere = floor ? `status='open' AND floor=?` : `status='open'`;
+  const openEsc = DB.get(`SELECT COUNT(*) n FROM escalations WHERE ${escWhere}`, floor ? [floor] : []).n;
   res.json({ total: r.total || 0, done: r.done || 0, thumbsUp: r.thumbsUp || 0, openEscalations: openEsc });
 });
 
@@ -328,6 +332,7 @@ app.post('/api/admin/login', (req, res) => {
 // Dashboard aggregates. range = today | week | month | year
 app.get('/api/admin/dashboard', requireAdmin, (req, res) => {
   const range = req.query.range || 'today';
+  const floor = req.query.floor && req.query.floor !== 'all' ? String(req.query.floor) : null;
   const now = new Date();
   let since = new Date();
   if (range === 'today') since = new Date(now.toISOString().slice(0, 10) + 'T00:00:00.000Z');
@@ -336,33 +341,99 @@ app.get('/api/admin/dashboard', requireAdmin, (req, res) => {
   else if (range === 'year') since.setFullYear(now.getFullYear() - 1);
   const sinceISO = since.toISOString();
 
-  const base = `FROM orders WHERE createdAt>=?`;
+  // base WHERE clause; optionally scoped to one floor
+  const base = floor ? `FROM orders WHERE createdAt>=? AND floor=?` : `FROM orders WHERE createdAt>=?`;
+  const args = floor ? [sinceISO, floor] : [sinceISO];
+
   const totals = DB.get(`SELECT COUNT(*) total,
       SUM(CASE WHEN status='done' THEN 1 ELSE 0 END) done,
       SUM(CASE WHEN feedback='up' THEN 1 ELSE 0 END) thumbsUp,
-      SUM(qty) drinks ${base}`, [sinceISO]);
+      SUM(qty) drinks ${base}`, args);
 
-  const byDrink = DB.rows(`SELECT item, SUM(qty) n ${base} GROUP BY item ORDER BY n DESC LIMIT 8`, [sinceISO]);
-  const byFloor = DB.rows(`SELECT floor, COUNT(*) n ${base} AND floor IS NOT NULL GROUP BY floor ORDER BY n DESC`, [sinceISO]);
-  const byDesk = DB.rows(`SELECT desk, COUNT(*) n ${base} GROUP BY desk ORDER BY n DESC LIMIT 6`, [sinceISO]);
-  const byHourRaw = DB.rows(`SELECT substr(createdAt,12,2) hh, COUNT(*) n ${base} GROUP BY hh ORDER BY hh`, [sinceISO]);
+  const byDrink = DB.rows(`SELECT item, SUM(qty) n ${base} GROUP BY item ORDER BY n DESC LIMIT 8`, args);
+  const byFloor = DB.rows(`SELECT floor, COUNT(*) n ${base} AND floor IS NOT NULL GROUP BY floor ORDER BY n DESC`, args);
+  const byDesk = DB.rows(`SELECT desk, COUNT(*) n ${base} GROUP BY desk ORDER BY n DESC LIMIT 6`, args);
+  const byHourRaw = DB.rows(`SELECT substr(createdAt,12,2) hh, COUNT(*) n ${base} GROUP BY hh ORDER BY hh`, args);
 
-  const waitRows = DB.rows(`SELECT createdAt, doneAt ${base} AND doneAt IS NOT NULL`, [sinceISO]);
+  const waitRows = DB.rows(`SELECT createdAt, doneAt ${base} AND doneAt IS NOT NULL`, args);
   let avgWait = null;
   if (waitRows.length) {
     const mins = waitRows.map(r => (new Date(r.doneAt) - new Date(r.createdAt)) / 60000);
     avgWait = Math.round((mins.reduce((a, b) => a + b, 0) / mins.length) * 10) / 10;
   }
 
-  const escOpen = DB.get(`SELECT COUNT(*) n FROM escalations WHERE createdAt>=? AND status='open'`, [sinceISO]).n;
-  const escTotal = DB.get(`SELECT COUNT(*) n FROM escalations WHERE createdAt>=?`, [sinceISO]).n;
+  // escalations, optionally scoped to floor
+  const escBase = floor ? `WHERE createdAt>=? AND floor=?` : `WHERE createdAt>=?`;
+  const escOpen = DB.get(`SELECT COUNT(*) n FROM escalations ${escBase} AND status='open'`, args).n;
+  const escTotal = DB.get(`SELECT COUNT(*) n FROM escalations ${escBase}`, args).n;
 
   res.json({
-    range,
+    range, floor: floor || 'all',
     totals: { total: totals.total || 0, done: totals.done || 0, thumbsUp: totals.thumbsUp || 0, drinks: totals.drinks || 0 },
     avgWait, escalations: { open: escOpen, total: escTotal },
     byDrink, byFloor, byDesk, byHour: byHourRaw
   });
+});
+
+// Download dashboard statistics as a CSV file
+app.get('/api/admin/dashboard/export', requireAdmin, (req, res) => {
+  const range = req.query.range || 'today';
+  const floor = req.query.floor && req.query.floor !== 'all' ? String(req.query.floor) : null;
+  const now = new Date();
+  let since = new Date();
+  if (range === 'today') since = new Date(now.toISOString().slice(0, 10) + 'T00:00:00.000Z');
+  else if (range === 'week') since.setDate(now.getDate() - 7);
+  else if (range === 'month') since.setMonth(now.getMonth() - 1);
+  else if (range === 'year') since.setFullYear(now.getFullYear() - 1);
+  const sinceISO = since.toISOString();
+  const base = floor ? `FROM orders WHERE createdAt>=? AND floor=?` : `FROM orders WHERE createdAt>=?`;
+  const args = floor ? [sinceISO, floor] : [sinceISO];
+
+  const totals = DB.get(`SELECT COUNT(*) total,
+      SUM(CASE WHEN status='done' THEN 1 ELSE 0 END) done,
+      SUM(CASE WHEN feedback='up' THEN 1 ELSE 0 END) thumbsUp,
+      SUM(qty) drinks ${base}`, args);
+  const byDrink = DB.rows(`SELECT item, SUM(qty) n ${base} GROUP BY item ORDER BY n DESC`, args);
+  const byFloor = DB.rows(`SELECT floor, COUNT(*) n ${base} AND floor IS NOT NULL GROUP BY floor ORDER BY n DESC`, args);
+  const byDesk = DB.rows(`SELECT desk, COUNT(*) n ${base} GROUP BY desk ORDER BY n DESC`, args);
+  const byHour = DB.rows(`SELECT substr(createdAt,12,2) hh, COUNT(*) n ${base} GROUP BY hh ORDER BY hh`, args);
+
+  const esc = c => `"${String(c == null ? '' : c).replace(/"/g, '""')}"`;
+  const lines = [];
+  lines.push(`تَقْهوَّ — Statistics export`);
+  lines.push(`Range,${range}`);
+  lines.push(`Floor,${floor || 'All floors'}`);
+  lines.push(`Generated,${new Date().toISOString()}`);
+  lines.push('');
+  lines.push('Summary');
+  lines.push('Metric,Value');
+  lines.push(`Total orders,${totals.total || 0}`);
+  lines.push(`Delivered,${totals.done || 0}`);
+  lines.push(`Drinks made,${totals.drinks || 0}`);
+  lines.push(`Thumbs up,${totals.thumbsUp || 0}`);
+  lines.push('');
+  lines.push('Orders by drink');
+  lines.push('Drink,Count');
+  byDrink.forEach(r => lines.push(`${esc(r.item)},${r.n}`));
+  lines.push('');
+  lines.push('Orders by floor');
+  lines.push('Floor,Count');
+  byFloor.forEach(r => lines.push(`${esc(r.floor)},${r.n}`));
+  lines.push('');
+  lines.push('Orders by desk');
+  lines.push('Desk,Count');
+  byDesk.forEach(r => lines.push(`${esc(r.desk)},${r.n}`));
+  lines.push('');
+  lines.push('Orders by hour');
+  lines.push('Hour,Count');
+  byHour.forEach(r => lines.push(`${esc(r.hh + ':00')},${r.n}`));
+
+  const csv = '\uFEFF' + lines.join('\r\n');  // BOM so Excel reads Arabic correctly
+  const stamp = new Date().toISOString().slice(0, 10);
+  const fname = `tgahw-stats-${floor || 'all'}-${range}-${stamp}.csv`;
+  res.setHeader('Content-Disposition', `attachment; filename="${fname}"`);
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.send(csv);
 });
 
 app.get('/api/admin/escalations', requireAdmin, (req, res) => {

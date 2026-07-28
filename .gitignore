@@ -1,8 +1,21 @@
-node_modules/
-.env
+# Live data — never overwrite the server's real history on deploy
 data.sqlite
+data.sqlite-journal
+data.sqlite-wal
+data.sqlite-shm
+
+# Runtime files (auto-created)
+settings.json
+server.log
+nohup.out
+
+# Generated QR codes (regenerate on the server with the real BASE_URL)
 qr-codes/
 
+# Dependencies
+node_modules/
 
-
-
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
