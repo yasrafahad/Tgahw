@@ -342,8 +342,8 @@
     <div class="qsub" id="qrUrl"></div>
     <img id="qrImg" alt="QR code">
     <div class="qactions">
-      <button class="qbtn primary" onclick="downloadQr()">Download PNG</button>
-      <button class="qbtn ghost" onclick="printQr()">Print</button>
+      <button class="qbtn primary" onclick="printCard()">🖨 Print card</button>
+      <button class="qbtn ghost" onclick="downloadQr()">Download QR (PNG)</button>
     </div>
     <div class="qr-base-row">
       Server address used in the QR (must be reachable from phones):
@@ -672,16 +672,43 @@ function downloadQr(){
   a.click();
 }
 
-function printQr(){
+function printCard(){
   if (!qrData) return;
+  const d = desks.find(x => x.id === qrDeskId) || {};
+  const isRoom = d.type === 'room';
+  const kindAr = isRoom ? 'غرفة الاجتماعات' : 'مكتب';
+  const kindEn = isRoom ? 'Meeting Room' : 'Desk';
+  const origin = location.origin;
   const w = window.open('', '_blank');
-  w.document.write(`<html><head><title>${qrDeskId}</title>
-    <style>body{font-family:sans-serif;text-align:center;padding:40px;color:#003C32}
-    img{width:300px;border:3px solid #003C32;border-radius:16px;padding:12px}
-    .id{font-size:28px;font-weight:bold;margin-top:16px}
-    .cap{color:#D1C1B0;letter-spacing:3px;font-size:12px;font-weight:bold;margin-top:8px}</style></head>
-    <body><img src="${qrData.dataUrl}"><div class="cap">SCAN TO ORDER</div><div class="id">${qrDeskId}</div>
-    <script>window.onload=()=>{window.print();}<\/script></body></html>`);
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${qrDeskId}</title>
+  <style>
+    @font-face{font-family:'PA';src:url('${origin}/fonts/IBMPlexSansArabic-Regular.ttf');font-weight:400}
+    @font-face{font-family:'PA';src:url('${origin}/fonts/IBMPlexSansArabic-SemiBold.ttf');font-weight:600}
+    @font-face{font-family:'PA';src:url('${origin}/fonts/IBMPlexSansArabic-Bold.ttf');font-weight:700}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'PA',sans-serif;display:flex;align-items:center;justify-content:center;padding:16px;background:#fff}
+    .card{width:320px;background:#F3ECE6;border-radius:20px;overflow:hidden;box-shadow:0 6px 24px rgba(0,60,50,.15)}
+    .top{background:linear-gradient(160deg,#003C32,#014A44);height:120px;border-radius:0 0 32px 32px;text-align:center;padding-top:36px}
+    .brand{font-size:46px;font-weight:700;color:#D1C1B0;line-height:1}
+    .qr-wrap{background:#fff;width:200px;height:200px;margin:-28px auto 0;border-radius:20px;box-shadow:0 10px 26px rgba(0,60,50,.16);display:flex;align-items:center;justify-content:center;border:3px solid #D1C1B0}
+    .qr-wrap img{width:150px;height:150px}
+    .scan{text-align:center;margin-top:18px}
+    .scan .big{font-size:18px;font-weight:700;color:#003C32}
+    .scan .en{display:block;font-size:11px;color:#668A84;font-weight:600;margin-top:5px;letter-spacing:2px;text-transform:uppercase}
+    .room{margin:16px auto 22px;width:fit-content;background:#003C32;color:#fff;border-radius:12px;padding:9px 24px;text-align:center}
+    .room small{display:block;font-size:10px;color:#D1C1B0;font-weight:600;margin-bottom:2px}
+    .room strong{font-size:16px;font-weight:700;letter-spacing:.5px}
+    @media print{body{padding:0}.card{box-shadow:none}}
+  </style></head>
+  <body>
+    <div class="card">
+      <div class="top"><div class="brand">تَقْهوَّ</div></div>
+      <div class="qr-wrap"><img src="${qrData.dataUrl}" alt="QR"></div>
+      <div class="scan"><div class="big">امسح الرمز واطلب مشروبك<span class="en">Scan to order</span></div></div>
+      <div class="room"><small>${kindAr} · ${kindEn}</small><strong>${qrDeskId}</strong></div>
+    </div>
+    <script>window.onload=()=>{setTimeout(()=>window.print(),400);}<\/script>
+  </body></html>`);
   w.document.close();
 }
 
