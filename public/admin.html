@@ -342,8 +342,8 @@
     <div class="qsub" id="qrUrl"></div>
     <img id="qrImg" alt="QR code">
     <div class="qactions">
-      <button class="qbtn primary" onclick="printCard()">🖨 Print card</button>
-      <button class="qbtn ghost" onclick="downloadQr()">Download QR (PNG)</button>
+      <button class="qbtn primary" onclick="downloadCard()">⬇ Download card</button>
+      <button class="qbtn ghost" onclick="downloadQr()">Download QR only</button>
     </div>
     <div class="qr-base-row">
       Server address used in the QR (must be reachable from phones):
@@ -672,44 +672,95 @@ function downloadQr(){
   a.click();
 }
 
-function printCard(){
+async function downloadCard(){
   if (!qrData) return;
   const d = desks.find(x => x.id === qrDeskId) || {};
   const isRoom = d.type === 'room';
   const kindAr = isRoom ? 'غرفة الاجتماعات' : 'مكتب';
   const kindEn = isRoom ? 'Meeting Room' : 'Desk';
-  const origin = location.origin;
-  const w = window.open('', '_blank');
-  w.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${qrDeskId}</title>
-  <style>
-    @font-face{font-family:'PA';src:url('${origin}/fonts/IBMPlexSansArabic-Regular.ttf');font-weight:400}
-    @font-face{font-family:'PA';src:url('${origin}/fonts/IBMPlexSansArabic-SemiBold.ttf');font-weight:600}
-    @font-face{font-family:'PA';src:url('${origin}/fonts/IBMPlexSansArabic-Bold.ttf');font-weight:700}
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'PA',sans-serif;display:flex;align-items:center;justify-content:center;padding:16px;background:#fff}
-    .card{width:320px;background:#F3ECE6;border-radius:20px;overflow:hidden;box-shadow:0 6px 24px rgba(0,60,50,.15)}
-    .top{background:linear-gradient(160deg,#003C32,#014A44);height:120px;border-radius:0 0 32px 32px;text-align:center;padding-top:36px}
-    .brand{font-size:46px;font-weight:700;color:#D1C1B0;line-height:1}
-    .qr-wrap{background:#fff;width:200px;height:200px;margin:-28px auto 0;border-radius:20px;box-shadow:0 10px 26px rgba(0,60,50,.16);display:flex;align-items:center;justify-content:center;border:3px solid #D1C1B0}
-    .qr-wrap img{width:150px;height:150px}
-    .scan{text-align:center;margin-top:18px}
-    .scan .big{font-size:18px;font-weight:700;color:#003C32}
-    .scan .en{display:block;font-size:11px;color:#668A84;font-weight:600;margin-top:5px;letter-spacing:2px;text-transform:uppercase}
-    .room{margin:16px auto 22px;width:fit-content;background:#003C32;color:#fff;border-radius:12px;padding:9px 24px;text-align:center}
-    .room small{display:block;font-size:10px;color:#D1C1B0;font-weight:600;margin-bottom:2px}
-    .room strong{font-size:16px;font-weight:700;letter-spacing:.5px}
-    @media print{body{padding:0}.card{box-shadow:none}}
-  </style></head>
-  <body>
-    <div class="card">
-      <div class="top"><div class="brand">تَقْهوَّ</div></div>
-      <div class="qr-wrap"><img src="${qrData.dataUrl}" alt="QR"></div>
-      <div class="scan"><div class="big">امسح الرمز واطلب مشروبك<span class="en">Scan to order</span></div></div>
-      <div class="room"><small>${kindAr} · ${kindEn}</small><strong>${qrDeskId}</strong></div>
-    </div>
-    <script>window.onload=()=>{setTimeout(()=>window.print(),400);}<\/script>
-  </body></html>`);
-  w.document.close();
+
+  // make sure the Plex font is loaded before drawing to canvas
+  try { await document.fonts.load('700 46px "Plex Arabic"'); await document.fonts.load('600 18px "Plex Arabic"'); } catch {}
+
+  // Card at 2x scale for a crisp download (640x900)
+  const S = 2, W = 320 * S, H = 450 * S;
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+
+  function roundRect(x, y, w, h, r){
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  // background (cream card)
+  ctx.fillStyle = '#F3ECE6';
+  roundRect(0, 0, W, H, 20 * S); ctx.fill();
+
+  // top teal band with curved bottom
+  const bandH = 130 * S;
+  const grad = ctx.createLinearGradient(0, 0, W, bandH);
+  grad.addColorStop(0, '#003C32'); grad.addColorStop(1, '#014A44');
+  ctx.fillStyle = grad;
+  roundRect(0, -40 * S, W, bandH + 40 * S, 32 * S); ctx.fill();
+  ctx.fillRect(0, 0, W, bandH - 32 * S); // square off the top
+
+  // brand wordmark
+  ctx.fillStyle = '#D1C1B0';
+  ctx.font = `700 ${46 * S}px "Plex Arabic", sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.direction = 'rtl';
+  ctx.fillText('تَقْهوَّ', W / 2, bandH * 0.52);
+
+  // white QR frame
+  const fw = 200 * S, fx = (W - fw) / 2, fy = bandH - 28 * S;
+  ctx.fillStyle = '#fff';
+  ctx.strokeStyle = '#D1C1B0'; ctx.lineWidth = 3 * S;
+  roundRect(fx, fy, fw, fw, 20 * S); ctx.fill(); ctx.stroke();
+
+  // draw the QR image
+  const qrImg = new Image();
+  await new Promise((res, rej) => { qrImg.onload = res; qrImg.onerror = rej; qrImg.src = qrData.dataUrl; });
+  const qs = 150 * S;
+  ctx.drawImage(qrImg, fx + (fw - qs) / 2, fy + (fw - qs) / 2, qs, qs);
+
+  // scan text
+  let ty = fy + fw + 30 * S;
+  ctx.fillStyle = '#003C32';
+  ctx.font = `700 ${18 * S}px "Plex Arabic", sans-serif`;
+  ctx.direction = 'rtl';
+  ctx.fillText('امسح الرمز واطلب مشروبك', W / 2, ty);
+  ty += 24 * S;
+  ctx.fillStyle = '#668A84';
+  ctx.font = `600 ${11 * S}px "Plex Arabic", sans-serif`;
+  ctx.direction = 'ltr';
+  ctx.fillText('S C A N   T O   O R D E R', W / 2, ty);
+
+  // desk/room chip
+  ty += 28 * S;
+  const chipW = Math.max(150 * S, ctx.measureText(qrDeskId).width + 60 * S);
+  const chipH = 52 * S, chipX = (W - chipW) / 2;
+  ctx.fillStyle = '#003C32';
+  roundRect(chipX, ty, chipW, chipH, 12 * S); ctx.fill();
+  ctx.fillStyle = '#D1C1B0';
+  ctx.font = `600 ${10 * S}px "Plex Arabic", sans-serif`;
+  ctx.direction = 'rtl';
+  ctx.fillText(kindAr + ' · ' + kindEn, W / 2, ty + 16 * S);
+  ctx.fillStyle = '#fff';
+  ctx.font = `700 ${17 * S}px "Plex Arabic", sans-serif`;
+  ctx.direction = 'ltr';
+  ctx.fillText(qrDeskId, W / 2, ty + 36 * S);
+
+  // download as PNG
+  const a = document.createElement('a');
+  a.href = cv.toDataURL('image/png');
+  a.download = 'Tgahw-card-' + qrDeskId + '.png';
+  a.click();
 }
 
 function closeQr(){
