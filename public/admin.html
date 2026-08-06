@@ -137,9 +137,15 @@
   .add-desk-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
   .desk-type-sel{border:1.5px solid var(--pale);border-radius:10px;padding:9px 12px;font-size:.9rem;background:#fff;color:var(--primary);font-family:inherit}
   .add-desk-err{color:#b3402f;font-size:.82rem;margin-bottom:8px;display:none}
-  .desk-filter{display:flex;align-items:center;gap:10px;margin:10px 0;font-size:.85rem;color:var(--gray)}
+  .desk-filter{display:flex;align-items:center;gap:10px;margin:10px 0;font-size:.85rem;color:var(--gray);flex-wrap:wrap}
   .desk-filter select{border:1.5px solid var(--pale);border-radius:8px;padding:6px 10px;background:#fff;color:var(--primary);font-family:inherit}
+  .desk-search{border:1.5px solid var(--pale);border-radius:8px;padding:6px 12px;background:#fff;color:var(--primary);font-family:inherit;font-size:.85rem;min-width:160px;flex:1}
   .desk-count{color:var(--muted-teal);font-size:.8rem}
+  .pantry-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;border:1px solid var(--pale);border-radius:12px;margin-bottom:10px;background:#fff}
+  .pantry-row .pl-floor{font-weight:800;color:var(--primary);min-width:150px}
+  .pantry-row .pl-url{flex:1;min-width:200px;font-family:monospace;font-size:.82rem;color:var(--muted-teal);word-break:break-all}
+  .pantry-row .pl-btn{border:1.5px solid var(--primary);background:var(--primary);color:#fff;border-radius:8px;padding:7px 14px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .pantry-row .pl-btn.ghost{background:transparent;color:var(--primary)}
   .desk-list-scroll{max-height:340px;overflow-y:auto;padding-right:4px}
   .desk-row{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--pale);border-radius:10px;padding:9px 13px;margin-bottom:7px}
   .desk-row.inactive{opacity:.5}
@@ -228,9 +234,9 @@
 <div id="loginView">
   <div class="lock">🔒</div>
   <h2>Admin access</h2>
-  <input type="password" id="pinInput" placeholder="PIN" maxlength="12" inputmode="numeric">
+  <input type="password" id="pinInput" placeholder="Password" maxlength="32" autocomplete="current-password">
   <button onclick="login()">Enter</button>
-  <div class="login-err" id="loginErr">Wrong PIN, try again.</div>
+  <div class="login-err" id="loginErr">Wrong password, try again.</div>
 </div>
 
 <!-- ADMIN -->
@@ -306,9 +312,16 @@
     <div class="desk-filter">
       <label>Show floor:</label>
       <select id="deskFloorFilter" onchange="renderDesks()"><option value="all">All</option></select>
+      <input type="text" id="deskSearch" placeholder="Search by name…" oninput="renderDesks()" class="desk-search">
       <span id="deskCount" class="desk-count"></span>
     </div>
     <div id="deskList"></div>
+  </div>
+
+  <div class="section">
+    <h2>Pantry screens (per floor)</h2>
+    <p style="color:var(--gray);font-size:.88rem;margin:0 0 12px">Each floor has its own pantry link, locked to that floor. Open it on that floor's tablet — it can only see and manage its own orders. The "All floors" link is for you (overview of everything).</p>
+    <div id="pantryLinks"></div>
   </div>
 
   <div class="section">
@@ -569,12 +582,48 @@ async function loadDesks(){
   const sel = document.getElementById('deskFloorFilter');
   sel.innerHTML = '<option value="all">All</option>' + floors.map(f => `<option value="${f}">Floor ${f}</option>`).join('');
   renderDesks();
+  renderPantryLinks(floors);
+}
+
+function renderPantryLinks(floors){
+  const wrap = document.getElementById('pantryLinks');
+  if (!wrap) return;
+  const origin = location.origin;
+  const rows = [];
+  // per-floor locked links
+  floors.forEach(f => {
+    const url = origin + '/staff?floor=' + encodeURIComponent(f);
+    rows.push({ label: 'Floor ' + f, url, locked: true });
+  });
+  // overview link (all floors)
+  rows.push({ label: 'All floors (overview)', url: origin + '/staff', locked: false });
+
+  wrap.innerHTML = '';
+  rows.forEach(r => {
+    const row = document.createElement('div');
+    row.className = 'pantry-row';
+    row.innerHTML = `
+      <span class="pl-floor">${r.locked ? '🔒 ' : '🗂 '}${escapeHtml(r.label)}</span>
+      <span class="pl-url">${escapeHtml(r.url)}</span>
+      <button class="pl-btn">Copy link</button>
+      <button class="pl-btn ghost">Open</button>`;
+    const btns = row.querySelectorAll('button');
+    btns[0].onclick = () => {
+      navigator.clipboard.writeText(r.url).then(() => { btns[0].textContent = 'Copied ✓'; setTimeout(() => btns[0].textContent = 'Copy link', 1500); });
+    };
+    btns[1].onclick = () => window.open(r.url, '_blank');
+    wrap.appendChild(row);
+  });
 }
 
 function renderDesks(){
   const filter = document.getElementById('deskFloorFilter').value;
+  const q = (document.getElementById('deskSearch').value || '').trim().toLowerCase();
   const list = document.getElementById('deskList');
-  const shown = desks.filter(d => filter === 'all' || floorOf(d.id) === filter);
+  const shown = desks.filter(d =>
+    (filter === 'all' || floorOf(d.id) === filter) &&
+    (q === '' || d.id.toLowerCase().includes(q))
+  );
   document.getElementById('deskCount').textContent =
     `${shown.length} shown · ${desks.length} total (${desks.filter(d => d.type === 'room').length} meeting rooms)`;
 

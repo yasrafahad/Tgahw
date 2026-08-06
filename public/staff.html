@@ -125,6 +125,7 @@
     <select id="floorFilter" onchange="onFloorChange()" style="border:1.5px solid var(--muted-teal);background:var(--dark-teal);color:var(--off-white);border-radius:16px;padding:7px 14px;font-size:.88rem;font-weight:700;font-family:inherit;cursor:pointer">
       <option value="all">All floors</option>
     </select>
+    <span id="floorLock" style="display:none;align-items:center;gap:6px;background:var(--gold);color:var(--primary);border-radius:16px;padding:7px 16px;font-size:.9rem;font-weight:800">🔒</span>
     <button class="hbtn" id="soundBtn" onclick="toggleSound()" title="Sound alert">🔔 Sound: on</button>
     <button class="pause-btn" id="pauseBtn" onclick="togglePause()">⏸ Pause orders</button>
   </div>
@@ -157,14 +158,23 @@
 <script>
 const grid = document.getElementById('grid');
 let paused = false;
-let currentFloor = localStorage.getItem('cupcall-floor') || 'all';
+// If the URL has ?floor=XX, lock the pantry to that floor.
+const lockedFloor = new URLSearchParams(location.search).get('floor');
+let currentFloor = lockedFloor || localStorage.getItem('cupcall-floor') || 'all';
 let lastOpenCount = 0, lastCallCount = 0, firstLoad = true;
 let soundOn = localStorage.getItem('cupcall-sound') !== 'off';
 
 async function loadFloors(){
+  const sel = document.getElementById('floorFilter');
+  if (lockedFloor) {
+    // Locked mode: hide the dropdown, show a fixed floor label
+    sel.style.display = 'none';
+    const label = document.getElementById('floorLock');
+    if (label) { label.style.display = 'inline-flex'; label.textContent = 'Floor ' + lockedFloor; }
+    return;
+  }
   try {
     const floors = await fetch('/api/floors').then(r => r.json());
-    const sel = document.getElementById('floorFilter');
     floors.forEach(f => {
       const o = document.createElement('option');
       o.value = f; o.textContent = 'Floor ' + f;
@@ -174,6 +184,7 @@ async function loadFloors(){
   } catch {}
 }
 function onFloorChange(){
+  if (lockedFloor) return;  // can't switch when locked
   currentFloor = document.getElementById('floorFilter').value;
   localStorage.setItem('cupcall-floor', currentFloor);
   refresh();

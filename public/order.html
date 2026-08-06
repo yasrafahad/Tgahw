@@ -767,6 +767,20 @@ function repeatLast(){
   if (!it) return;
   openDetail(it);
   qty = Math.min(deskLastOrder.qty || 1, it.maxQty || 5);
+
+  // restore the saved customization (sugar, options) from the stored summary string
+  const optStr = deskLastOrder.option || '';
+  if (optStr && it.optionGroups) {
+    it.optionGroups.forEach(g => {
+      // pick the longest matching choice so "No" doesn't win over "No mint"
+      const match = [...g.choices].sort((a, b) => b.length - a.length)
+        .find(choice => optStr.includes(choice));
+      if (match) picked[g.name] = match;
+    });
+  }
+  // restore the note
+  if (deskLastOrder.note) document.getElementById('note').value = deskLastOrder.note;
+
   renderOptionGroups(); updateQty(); updateSendBtn();
 }
 
